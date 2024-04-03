@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – のTips">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
   </head>
   <body>
     <div class="container">
@@ -122,7 +129,7 @@ elem.addEventListener('click', () =&gt; {
 <a href="/docs/#api/ja/renderers/WebGLRenderer"><code class="notranslate" translate="no">WebGLRenderer</code></a> 作成時に <code class="notranslate" translate="no">preserveDrawingBuffer: true</code> を渡す必要があります。
 これによりブラウザがキャンバスをクリアできなくなります。また、three.jsでもキャンバスをクリアしないようにする必要があります。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const canvas = document.querySelector('#c');
--const renderer = new THREE.WebGLRenderer({canvas});
+-const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
 +const renderer = new THREE.WebGLRenderer({
 +  canvas,
 +  preserveDrawingBuffer: true,
@@ -205,7 +212,7 @@ elem.addEventListener('click', () =&gt; {
 <p>デフォルトではthree.jsはキャンバスを不透明にします。
 キャンバスを透明にしたい場合は <a href="/docs/#api/ja/renderers/WebGLRenderer"><code class="notranslate" translate="no">WebGLRenderer</code></a> 作成時に<a href="/docs/#api/ja/renderers/WebGLRenderer#alpha"><code class="notranslate" translate="no">alpha:true</code></a>を指定します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const canvas = document.querySelector('#c');
--const renderer = new THREE.WebGLRenderer({canvas});
+-const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
 +const renderer = new THREE.WebGLRenderer({
 +  canvas,
 +  alpha: true,
@@ -325,9 +332,9 @@ const renderer = new THREE.WebGLRenderer({
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

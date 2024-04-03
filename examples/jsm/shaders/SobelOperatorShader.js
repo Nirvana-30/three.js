@@ -1,6 +1,6 @@
 import {
 	Vector2
-} from '../../../build/three.module.js';
+} from 'three';
 
 /**
  * Sobel Edge Detection (see https://youtu.be/uihBwtPIBxM)
@@ -10,6 +10,8 @@ import {
  */
 
 const SobelOperatorShader = {
+
+	name: 'SobelOperatorShader',
 
 	uniforms: {
 

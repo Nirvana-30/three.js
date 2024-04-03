@@ -1,17 +1,21 @@
 import {
 	Vector2
-} from '../../../build/three.module.js';
+} from 'three';
 
 /**
  * TODO
  */
 
 const DepthLimitedBlurShader = {
+
+	name: 'DepthLimitedBlurShader',
+
 	defines: {
 		'KERNEL_RADIUS': 4,
 		'DEPTH_PACKING': 1,
 		'PERSPECTIVE_CAMERA': 1
 	},
+
 	uniforms: {
 		'tDiffuse': { value: null },
 		'size': { value: new Vector2( 512, 512 ) },
@@ -22,6 +26,7 @@ const DepthLimitedBlurShader = {
 		'cameraFar': { value: 1000 },
 		'depthCutoff': { value: 10 },
 	},
+
 	vertexShader: /* glsl */`
 
 		#include <common>

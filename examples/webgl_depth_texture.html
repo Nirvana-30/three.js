@@ -62,19 +62,28 @@
 			</div>
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import Stats from './jsm/libs/stats.module.js';
+			import Stats from 'three/addons/libs/stats.module.js';
 
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 			let camera, scene, renderer, controls, stats;
 			let target;
 			let postScene, postCamera, postMaterial;
-			let supportsExtension = true;
+			const supportsExtension = true;
 
 			const params = {
 				format: THREE.DepthFormat,
@@ -90,15 +99,6 @@
 			function init() {
 
 				renderer = new THREE.WebGLRenderer();
-
-				if ( renderer.capabilities.isWebGL2 === false && renderer.extensions.has( 'WEBGL_depth_texture' ) === false ) {
-
-					supportsExtension = false;
-					document.querySelector( '#error' ).style.display = 'block';
-					return;
-
-				}
-
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				document.body.appendChild( renderer.domElement );
@@ -143,12 +143,9 @@
 				const type = parseFloat( params.type );
 
 				target = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight );
-				target.texture.format = THREE.RGBFormat;
 				target.texture.minFilter = THREE.NearestFilter;
 				target.texture.magFilter = THREE.NearestFilter;
-				target.texture.generateMipmaps = false;
 				target.stencilBuffer = ( format === THREE.DepthStencilFormat ) ? true : false;
-				target.depthBuffer = true;
 				target.depthTexture = new THREE.DepthTexture();
 				target.depthTexture.format = format;
 				target.depthTexture.type = type;

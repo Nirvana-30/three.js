@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – Primitives de ">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
   </head>
   <body>
     <div class="container">
@@ -194,7 +201,7 @@ Et enfin, nous créons la géométrie et appelons <code class="notranslate" tran
     const geometry = new TextGeometry('three.js', {
       font: font,
       size: 3.0,
-      height: .2,
+      depth: .2,
       curveSegments: 12,
       bevelEnabled: true,
       bevelThickness: 0.15,
@@ -351,9 +358,9 @@ Vous pouvez également créer votre <a href="custom-buffergeometry.html">BufferG
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script defer src="../resources/prettify.js"></script>
+  <script defer src="../resources/lesson.js"></script>
 
 
 

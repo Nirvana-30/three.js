@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – 로 게임 만들기">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
     <link rel="stylesheet" href="/manual/ko/lang.css">
   </head>
   <body>
@@ -119,13 +126,13 @@ manager.onLoad = init;
   height: 1em;
   background-color: #888;
   background-image: linear-gradient(
-    -45deg, 
-    rgba(255, 255, 255, .5) 25%, 
-    transparent 25%, 
-    transparent 50%, 
-    rgba(255, 255, 255, .5) 50%, 
-    rgba(255, 255, 255, .5) 75%, 
-    transparent 75%, 
+    -45deg,
+    rgba(255, 255, 255, .5) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, .5) 50%,
+    rgba(255, 255, 255, .5) 75%,
+    transparent 75%,
     transparent
   );
   background-size: 50px 50px;
@@ -162,10 +169,10 @@ function init() {
 </pre>
 <p>이제 애니메이션이 들어간 모델을 화면에 띄워봅시다.</p>
 <p><a href="load-gltf.html">이전 glTF 파일 예제</a>와 달리 이번에는 각 모델을 하나 이상 배치할 계획입니다. 그러니 파일을 불러온 뒤 바로 장면에 넣는 대신 각 glTF의 씬 그래프(scene), 이 경우에는 움직이는 캐릭터를 복사해야 합니다. 다행히 Three.js에는 <code class="notranslate" translate="no">SkeletonUtil.clone</code>이라는 함수가 있어 이를 쉽게 구현할 수 있죠. 먼저 해당 모듈을 불러오겠습니다.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from '/build/three.module.js';
-import { OrbitControls } from '/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from '/examples/jsm/loaders/GLTFLoader.js';
-+import { SkeletonUtils } from '/examples/jsm/utils/SkeletonUtils.js';
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
++import { SkeletonUtils } from 'three/addons/utils/SkeletonUtils.js';
 </pre>
 <p>그리고 아까 불러왔던 모델을 복사합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function init() {
@@ -617,13 +624,13 @@ function render(now) {
 <p>이제 사용자 입력 시스템을 추가해봅시다. 단순히 키보드 이벤트에 직접 코드를 작성하기보다 클래스를 만들어 코드의 다른 부분에서도 <code class="notranslate" translate="no">왼쪽</code>, <code class="notranslate" translate="no">오른쪽</code>을 확인할 수 있도록 하겠습니다. 이러면 <code class="notranslate" translate="no">왼쪽</code>, <code class="notranslate" translate="no">오른쪽</code> 등 다양한 키를 다양한 방법으로 지정할 수 있겠죠. 먼저 키보드 이벤트부터 지정합시다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">/**
  * 키 또는 버튼의 상태를 추적합니다.
- * 
+ *
  * 왼쪽 방향키가 눌렸는지 확인하려면
- * 
+ *
  *     inputManager.keys.left.down
  *
  * 을 확인하고, 현재 프레임에서 왼쪽 키를 눌렀는지 확인하려면
- * 
+ *
  *     inputManager.keys.left.justPressed
  *
  * 를 확인하면 됩니다.
@@ -1305,11 +1312,11 @@ class StateDisplayHelper extends Component {
 }
 </pre>
 <p>추가로 lil-gui를 이용해 위 디버깅 요소들를 켜고 끌 수 있도록 합니다.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from '/build/three.module.js';
-import { OrbitControls } from '/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from '/examples/jsm/loaders/GLTFLoader.js';
-import { SkeletonUtils } from '/examples/jsm/utils/SkeletonUtils.js';
-+import { GUI } from '/examples/jsm/libs/lil-gui.module.min.js';
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { SkeletonUtils } from 'three/addons/utils/SkeletonUtils.js';
++import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 </pre>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const gui = new GUI();
 +gui.add(globals, 'debug').onChange(showHideDebugInfo);
@@ -1637,9 +1644,9 @@ function* animalCoroutine() {
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

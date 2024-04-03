@@ -17,16 +17,25 @@
 		</div>
 		<div id="container"></div>
 
-		<script src="js/libs/ammo.wasm.js"></script>
+		<script src="jsm/libs/ammo.wasm.js"></script>
+
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
 
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import Stats from './jsm/libs/stats.module.js';
+			import Stats from 'three/addons/libs/stats.module.js';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
-			import * as BufferGeometryUtils from './jsm/utils/BufferGeometryUtils.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+			import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
 
 			// Graphics variables
 			let container, stats;
@@ -81,7 +90,7 @@
 
 				camera.position.set( - 7, 5, 8 );
 
-				renderer = new THREE.WebGLRenderer();
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				renderer.shadowMap.enabled = true;
@@ -93,10 +102,10 @@
 
 				textureLoader = new THREE.TextureLoader();
 
-				const ambientLight = new THREE.AmbientLight( 0x404040 );
+				const ambientLight = new THREE.AmbientLight( 0xbbbbbb );
 				scene.add( ambientLight );
 
-				const light = new THREE.DirectionalLight( 0xffffff, 1 );
+				const light = new THREE.DirectionalLight( 0xffffff, 3 );
 				light.position.set( - 10, 10, 5 );
 				light.castShadow = true;
 				const d = 20;
@@ -151,6 +160,7 @@
 				ground.receiveShadow = true;
 				textureLoader.load( 'textures/grid.png', function ( texture ) {
 
+					texture.colorSpace = THREE.SRGBColorSpace;
 					texture.wrapS = THREE.RepeatWrapping;
 					texture.wrapT = THREE.RepeatWrapping;
 					texture.repeat.set( 40, 40 );

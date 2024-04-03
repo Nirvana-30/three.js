@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – 大量对象的优化">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
     <link rel="stylesheet" href="/manual/zh/lang.css">
   </head>
   <body>
@@ -146,14 +153,13 @@ function hsl(h, s, l) {
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
   const loader = new THREE.TextureLoader();
   const texture = loader.load('resources/images/world.jpg', render);
-  const geometry = new THREE.SphereBufferGeometry(1, 64, 32);
+  const geometry = new THREE.SphereGeometry(1, 64, 32);
   const material = new THREE.MeshBasicMaterial({map: texture});
   scene.add(new THREE.Mesh(geometry, material));
 }
 </pre>
 <p>看过来, 当材质加载完成后才调用<code class="notranslate" translate="no">render</code>方法. 我们这么做是因为使用了<a href="rendering-on-demand.html">按需渲染</a>中的方法, 而不是连续渲染. 这样我们仅仅需要在材质加载后渲染一遍就好. </p>
-<p>然后我们需要对代码做一些改动, 每个数据都画一个点, 而不是每个</p>
-<p>然后我们需要修改上面每个数据点画一个点的代码, 改为每个数据点画一个框</p>
+<p>然后我们需要修改上面每个数据点画一个点的代码, 改为每个数据点画一个框.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function addBoxes(file) {
   const {min, max, data} = file;
   const range = max - min;
@@ -162,7 +168,7 @@ function hsl(h, s, l) {
   const boxWidth = 1;
   const boxHeight = 1;
   const boxDepth = 1;
-  const geometry = new THREE.BoxBufferGeometry(boxWidth, boxHeight, boxDepth);
+  const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
   // 沿着z轴缩放
   geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, 0.5));
 
@@ -263,7 +269,7 @@ function hsl(h, s, l) {
 -  const boxWidth = 1;
 -  const boxHeight = 1;
 -  const boxDepth = 1;
--  const geometry = new THREE.BoxBufferGeometry(boxWidth, boxHeight, boxDepth);
+-  const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 -  // 沿着Z轴缩放
 -  geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, 0.5));
 
@@ -304,7 +310,7 @@ function hsl(h, s, l) {
 +      const boxWidth = 1;
 +      const boxHeight = 1;
 +      const boxDepth = 1;
-+      const geometry = new THREE.BoxBufferGeometry(boxWidth, boxHeight, boxDepth);
++      const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
       // 调整位置辅助器的指向
       lonHelper.rotation.y = THREE.MathUtils.degToRad(lonNdx + file.xllcorner) + lonFudge;
@@ -324,7 +330,7 @@ function hsl(h, s, l) {
     });
   });
 
-+  const mergedGeometry = BufferGeometryUtils.mergeBufferGeometries(
++  const mergedGeometry = BufferGeometryUtils.mergeGeometries(
 +      geometries, false);
 +  const material = new THREE.MeshBasicMaterial({color:'red'});
 +  const mesh = new THREE.Mesh(mergedGeometry, material);
@@ -333,9 +339,9 @@ function hsl(h, s, l) {
 }
 </pre>
 <p>我们移除了之前用来改变盒子几何中心的代码, 取而代之的是<code class="notranslate" translate="no">originHelper</code>. 这次我们要为每个长方体创建新的几何体, 因为我们要使用“applyMatrix”来移动每个长方体几何体的顶点, 所以我们最好只移动一次, 而不是两次.</p>
-<p>最后, 我们将所有几何体的数组传入<code class="notranslate" translate="no">BufferGeometryUtils.mergeBufferGeometries</code>, 这个方法将会将其合并到一个mesh中</p>
+<p>最后, 我们将所有几何体的数组传入<code class="notranslate" translate="no">BufferGeometryUtils.mergeGeometries</code>, 这个方法将会将其合并到一个mesh中</p>
 <p>别忘了引入<code class="notranslate" translate="no">BufferGeometryUtils</code></p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as BufferGeometryUtils from '/examples/jsm/utils/BufferGeometryUtils.js';
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
 </pre>
 <p>现在, 至少在我的机器上, 可以跑到60帧每秒了</p>
 <p></p><div translate="no" class="threejs_example_container notranslate">
@@ -361,7 +367,7 @@ data.forEach((row, latNdx) =&gt; {
     const boxWidth = 1;
     const boxHeight = 1;
     const boxDepth = 1;
-    const geometry = new THREE.BoxBufferGeometry(boxWidth, boxHeight, boxDepth);
+    const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
     lonHelper.rotation.y = THREE.MathUtils.degToRad(lonNdx + file.xllcorner) + lonFudge;
     latHelper.rotation.x = THREE.MathUtils.degToRad(latNdx + file.yllcorner) + latFudge;
@@ -398,7 +404,7 @@ data.forEach((row, latNdx) =&gt; {
 </pre>
 <p>上面的代码中, 我们查找几何体中的<code class="notranslate" translate="no">position</code>属性来获取所需的数量和顶点. 然后创建一个<code class="notranslate" translate="no">Uint8Array</code>来输入颜色. 接下来通过调用<code class="notranslate" translate="no">geometry.setAttribute</code>来将其设定为一个属性. </p>
 <p>最后告诉three.js使用顶点上色. </p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mergedGeometry = BufferGeometryUtils.mergeBufferGeometries(
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mergedGeometry = BufferGeometryUtils.mergeGeometries(
     geometries, false);
 -const material = new THREE.MeshBasicMaterial({color:'red'});
 +const material = new THREE.MeshBasicMaterial({
@@ -414,7 +420,7 @@ scene.add(mesh);
 </div>
 
 <p></p>
-<p>合并几何体是一个常见的优化手段. 比如, 可以将一百多棵树合并成一个几何体, 一堆石头合并成一块石头, 零零碎碎的栅栏合并成一个栅栏的mesh. 另一个例子是Minecraft并不是一个一个方块去绘制, 而是创建一组合并了的方块, 当然之前选择性地移除那些看不见的. </p>
+<p>合并几何体是一个常见的优化手段. 比如, 可以将一百多棵树合并成一个几何体, 一堆石头合并成一块石头, 零零碎碎的栅栏合并成一个栅栏的mesh. 另一个在 Minecraft 中的例子是, 它不太可能单独绘制每个立方体, 而是创建一组合并的立方体, 并且选择性地删除那些永远不可见的面. </p>
 <p>这么做带来的问题是, 合并起来简单, 分离难. 接下来我们再引入一种优化方案
 <a href="optimize-lots-of-objects-animated.html">优化大量动画对象</a>.</p>
 <p><canvas id="c"></canvas></p>
@@ -422,9 +428,9 @@ scene.add(mesh);
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

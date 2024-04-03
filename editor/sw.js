@@ -1,5 +1,3 @@
-// r136
-
 const cacheName = 'threejs-editor';
 
 const assets = [
@@ -17,14 +15,18 @@ const assets = [
 	'../examples/jsm/libs/chevrotain.module.min.js',
 	'../examples/jsm/libs/fflate.module.js',
 
-	'../examples/js/libs/draco/draco_decoder.js',
-	'../examples/js/libs/draco/draco_decoder.wasm',
-	'../examples/js/libs/draco/draco_encoder.js',
-	'../examples/js/libs/draco/draco_wasm_wrapper.js',
+	'../examples/jsm/libs/draco/draco_decoder.js',
+	'../examples/jsm/libs/draco/draco_decoder.wasm',
+	'../examples/jsm/libs/draco/draco_encoder.js',
+	'../examples/jsm/libs/draco/draco_wasm_wrapper.js',
 
-	'../examples/js/libs/draco/gltf/draco_decoder.js',
-	'../examples/js/libs/draco/gltf/draco_decoder.wasm',
-	'../examples/js/libs/draco/gltf/draco_wasm_wrapper.js',
+	'../examples/jsm/libs/draco/gltf/draco_decoder.js',
+	'../examples/jsm/libs/draco/gltf/draco_decoder.wasm',
+	'../examples/jsm/libs/draco/gltf/draco_wasm_wrapper.js',
+
+	'../examples/jsm/libs/meshopt_decoder.module.js',
+
+	'../examples/jsm/libs/mikktspace.module.js',
 
 	'../examples/jsm/libs/motion-controllers.module.js',
 
@@ -39,18 +41,18 @@ const assets = [
 	'../examples/jsm/loaders/FBXLoader.js',
 	'../examples/jsm/loaders/GLTFLoader.js',
 	'../examples/jsm/loaders/KMZLoader.js',
-	'../examples/jsm/loaders/IFCLoader.js',
-	'../examples/jsm/loaders/ifc/web-ifc-api.js',
-	'../examples/jsm/loaders/ifc/web-ifc.wasm',
+	'../examples/jsm/loaders/KTX2Loader.js',
 	'../examples/jsm/loaders/MD2Loader.js',
 	'../examples/jsm/loaders/OBJLoader.js',
 	'../examples/jsm/loaders/MTLLoader.js',
+	'../examples/jsm/loaders/PCDLoader.js',
 	'../examples/jsm/loaders/PLYLoader.js',
 	'../examples/jsm/loaders/RGBELoader.js',
 	'../examples/jsm/loaders/STLLoader.js',
 	'../examples/jsm/loaders/SVGLoader.js',
 	'../examples/jsm/loaders/TGALoader.js',
 	'../examples/jsm/loaders/TDSLoader.js',
+	'../examples/jsm/loaders/USDZLoader.js',
 	'../examples/jsm/loaders/VOXLoader.js',
 	'../examples/jsm/loaders/VRMLLoader.js',
 	'../examples/jsm/loaders/VTKLoader.js',
@@ -64,7 +66,6 @@ const assets = [
 
 	'../examples/jsm/environments/RoomEnvironment.js',
 
-	'../examples/jsm/exporters/ColladaExporter.js',
 	'../examples/jsm/exporters/DRACOExporter.js',
 	'../examples/jsm/exporters/GLTFExporter.js',
 	'../examples/jsm/exporters/OBJExporter.js',
@@ -74,9 +75,8 @@ const assets = [
 
 	'../examples/jsm/helpers/VertexNormalsHelper.js',
 
-	'../examples/jsm/geometries/TeapotGeometry.js',
+	'../examples/jsm/utils/BufferGeometryUtils.js',
 
-	'../examples/jsm/webxr/VRButton.js',
 	'../examples/jsm/webxr/XRControllerModelFactory.js',
 
 	'./images/rotate.svg',
@@ -91,6 +91,7 @@ const assets = [
 	'./js/libs/codemirror/mode/glsl.js',
 
 	'./js/libs/esprima.js',
+	'./js/libs/ffmpeg.min.js',
 	'./js/libs/jsonlint.js',
 
 	'./js/libs/codemirror/addon/dialog.css',
@@ -136,28 +137,31 @@ const assets = [
 	'./js/Menubar.File.js',
 	'./js/Menubar.Edit.js',
 	'./js/Menubar.Add.js',
-	'./js/Menubar.Play.js',
 	'./js/Menubar.Examples.js',
 	'./js/Menubar.Help.js',
 	'./js/Menubar.View.js',
 	'./js/Menubar.Status.js',
 	'./js/Resizer.js',
+	'./js/Selector.js',
 	'./js/Sidebar.js',
 	'./js/Sidebar.Scene.js',
 	'./js/Sidebar.Project.js',
-	'./js/Sidebar.Project.Materials.js',
 	'./js/Sidebar.Project.Renderer.js',
+	'./js/Sidebar.Project.Materials.js',
+	'./js/Sidebar.Project.App.js',
+	'./js/Sidebar.Project.Image.js',
 	'./js/Sidebar.Project.Video.js',
 	'./js/Sidebar.Settings.js',
 	'./js/Sidebar.Settings.History.js',
 	'./js/Sidebar.Settings.Shortcuts.js',
-	'./js/Sidebar.Settings.Viewport.js',
 	'./js/Sidebar.Properties.js',
 	'./js/Sidebar.Object.js',
+	'./js/Sidebar.Object.Animation.js',
 	'./js/Sidebar.Geometry.js',
 	'./js/Sidebar.Geometry.BufferGeometry.js',
 	'./js/Sidebar.Geometry.Modifiers.js',
 	'./js/Sidebar.Geometry.BoxGeometry.js',
+	'./js/Sidebar.Geometry.CapsuleGeometry.js',
 	'./js/Sidebar.Geometry.CircleGeometry.js',
 	'./js/Sidebar.Geometry.CylinderGeometry.js',
 	'./js/Sidebar.Geometry.DodecahedronGeometry.js',
@@ -173,7 +177,6 @@ const assets = [
 	'./js/Sidebar.Geometry.TorusGeometry.js',
 	'./js/Sidebar.Geometry.TorusKnotGeometry.js',
 	'./js/Sidebar.Geometry.TubeGeometry.js',
-	'./js/Sidebar.Geometry.TeapotGeometry.js',
 	'./js/Sidebar.Material.js',
 	'./js/Sidebar.Material.BooleanProperty.js',
 	'./js/Sidebar.Material.ColorProperty.js',
@@ -181,15 +184,14 @@ const assets = [
 	'./js/Sidebar.Material.MapProperty.js',
 	'./js/Sidebar.Material.NumberProperty.js',
 	'./js/Sidebar.Material.Program.js',
-	'./js/Sidebar.Animation.js',
 	'./js/Sidebar.Script.js',
 	'./js/Strings.js',
 	'./js/Toolbar.js',
 	'./js/Viewport.js',
-	'./js/Viewport.Camera.js',
+	'./js/Viewport.Controls.js',
 	'./js/Viewport.Info.js',
 	'./js/Viewport.ViewHelper.js',
-	'./js/Viewport.VR.js',
+	'./js/Viewport.XR.js',
 
 	'./js/Command.js',
 	'./js/commands/AddObjectCommand.js',
@@ -229,13 +231,17 @@ self.addEventListener( 'install', async function () {
 
 	const cache = await caches.open( cacheName );
 
-	assets.forEach( function ( asset ) {
+	assets.forEach( async function ( asset ) {
 
-		cache.add( asset ).catch( function () {
+		try {
+
+			await cache.add( asset );
+
+		} catch {
 
 			console.warn( '[SW] Cound\'t cache:', asset );
 
-		} );
+		}
 
 	} );
 
@@ -244,34 +250,50 @@ self.addEventListener( 'install', async function () {
 self.addEventListener( 'fetch', async function ( event ) {
 
 	const request = event.request;
+
+	if ( request.url.startsWith( 'chrome-extension' ) ) return;
+
 	event.respondWith( networkFirst( request ) );
 
 } );
 
 async function networkFirst( request ) {
 
-	return fetch( request )
-		.then( async function ( response ) {
+	try {
+
+		let response = await fetch( request );
+
+		if ( request.url.endsWith( 'editor/' ) || request.url.endsWith( 'editor/index.html' ) ) { // copied from coi-serviceworker
+
+			const newHeaders = new Headers( response.headers );
+			newHeaders.set( 'Cross-Origin-Embedder-Policy', 'require-corp' );
+			newHeaders.set( 'Cross-Origin-Opener-Policy', 'same-origin' );
+
+			response = new Response( response.body, { status: response.status, statusText: response.statusText, headers: newHeaders } );
+
+		}
+
+		if ( request.method === 'GET' ) {
 
 			const cache = await caches.open( cacheName );
-
 			cache.put( request, response.clone() );
 
-			return response;
+		}
 
-		} )
-		.catch( async function () {
+		return response;
 
-			const cachedResponse = await caches.match( request );
+	} catch {
 
-			if ( cachedResponse === undefined ) {
+		const cachedResponse = await caches.match( request );
 
-				console.warn( '[SW] Not cached:', request.url );
+		if ( cachedResponse === undefined ) {
 
-			}
+			console.warn( '[SW] Not cached:', request.url );
 
-			return cachedResponse;
+		}
 
-		} );
+		return cachedResponse;
+
+	}
 
 }

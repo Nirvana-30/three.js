@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – Custom BufferGeometry">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
   </head>
   <body>
     <div class="container">
@@ -233,7 +240,7 @@ geometry.setAttribute(
 
 <p></p>
 <p><a href="/docs/#api/en/core/BufferGeometry"><code class="notranslate" translate="no">BufferGeometry</code></a> has a <a href="/docs/#api/en/core/BufferGeometry#computeVertexNormals"><code class="notranslate" translate="no">computeVertexNormals</code></a> method for computing normals if you
-are not supplying them. Unfortunately, 
+are not supplying them. Unfortunately,
 since positions can not be shared if any other part of a vertex is different,
 the results of calling <code class="notranslate" translate="no">computeVertexNormals</code> will generate seams if your
 geometry is supposed to connect to itself like a sphere or a cylinder.</p>
@@ -425,8 +432,7 @@ positionAttribute.needsUpdate = true;
 make your own geometry and how to dynamically update the contents of a
 <a href="/docs/#api/en/core/BufferAttribute"><code class="notranslate" translate="no">BufferAttribute</code></a>.</p>
 <!-- needed in English only to prevent warning from outdated translations -->
-<p><a href="resources/threejs-geometry.svg"></a>
-<a href="custom-geometry.html"></a></p>
+<p><a href="resources/threejs-geometry.svg"></a></p>
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-custom-buffergeometry.js"></script>
 
@@ -434,9 +440,9 @@ make your own geometry and how to dynamically update the contents of a
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

@@ -13,14 +13,21 @@
 			<input id="scrubber" type="range" value="0" style="width: 300px">
 		</div>
 
-		<script src="js/libs/lottie_canvas.js"></script>
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
 
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
-			import { RoomEnvironment } from './jsm/environments/RoomEnvironment.js';
-			import { RoundedBoxGeometry } from './jsm/geometries/RoundedBoxGeometry.js';
-			import { LottieLoader } from './jsm/loaders/LottieLoader.js';
+			import * as THREE from 'three';
+			import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+			import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+			import { LottieLoader } from 'three/addons/loaders/LottieLoader.js';
 
 			let renderer, scene, camera;
 			let mesh;
@@ -43,6 +50,7 @@
 					setupControls( texture.animation );
 
 					// texture = new THREE.TextureLoader().load( 'textures/uv_grid_directx.jpg' );
+					// texture.colorSpace = THREE.SRGBColorSpace;
 
 					const geometry = new RoundedBoxGeometry( 1, 1, 1, 7, 0.2 );
 					const material = new THREE.MeshStandardMaterial( { roughness: 0.1, map: texture } );
@@ -56,7 +64,7 @@
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				document.body.appendChild( renderer.domElement );
 
-				const environment = new RoomEnvironment();
+				const environment = new RoomEnvironment( renderer );
 				const pmremGenerator = new THREE.PMREMGenerator( renderer );
 
 				scene.environment = pmremGenerator.fromScene( environment ).texture;

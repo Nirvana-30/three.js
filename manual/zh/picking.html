@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – 拾取">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
     <link rel="stylesheet" href="/manual/zh/lang.css">
   </head>
   <body>
@@ -134,7 +141,7 @@ function setPickPosition(event) {
   pickPosition.y = (pos.y / canvas.height) * -2 + 1;  // note we flip Y
 }
 
-function clearPickPosition() { 
+function clearPickPosition() {
   // 对于触屏，不像鼠标总是能有一个位置坐标，
   // 如果用户不在触摸屏幕，我们希望停止拾取操作。
   // 因此，我们选取一个特别的值，表明什么都没选中
@@ -255,7 +262,7 @@ for (let i = 0; i &lt; numObjects; ++i) {
   cube.scale.set(rand(3, 6), rand(3, 6), rand(3, 6));
 
 +  const pickingMaterial = new THREE.MeshPhongMaterial({
-+    emissive: new THREE.Color(id),
++    emissive: new THREE.Color().setHex(id, THREE.NoColorSpace),
 +    color: new THREE.Color(0, 0, 0),
 +    specular: new THREE.Color(0, 0, 0),
 +    map: texture,
@@ -373,9 +380,9 @@ for (let i = 0; i &lt; numObjects; ++i) {
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

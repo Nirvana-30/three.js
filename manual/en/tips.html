@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – Tips">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
   </head>
   <body>
     <div class="container">
@@ -25,9 +32,9 @@ using three.js that seemed too small to have their own article.</p>
 <p><a id="screenshot" data-toc="Taking a screenshot"></a></p>
 <h1 id="taking-a-screenshot-of-the-canvas">Taking A Screenshot of the Canvas</h1>
 <p>In the browser there are effectively 2 functions that will take a screenshot.
-The old one 
+The old one
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL"><code class="notranslate" translate="no">canvas.toDataURL</code></a>
-and the new better one 
+and the new better one
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob"><code class="notranslate" translate="no">canvas.toBlob</code></a></p>
 <p>So you'd think it would be easy to take a screenshot by just adding some code like</p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;canvas id="c"&gt;&lt;/canvas&gt;
@@ -133,7 +140,7 @@ you create the <a href="/docs/#api/en/renderers/WebGLRenderer"><code class="notr
 clearing the canvas. You also need to tell three.js not to clear
 the canvas as well.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const canvas = document.querySelector('#c');
--const renderer = new THREE.WebGLRenderer({canvas});
+-const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
 +const renderer = new THREE.WebGLRenderer({
 +  canvas,
 +  preserveDrawingBuffer: true,
@@ -223,7 +230,7 @@ canvas has both solutions applied.</p>
 canvas to be transparent pass in <a href="/docs/#api/en/renderers/WebGLRenderer#alpha"><code class="notranslate" translate="no">alpha:true</code></a> when you create
 the <a href="/docs/#api/en/renderers/WebGLRenderer"><code class="notranslate" translate="no">WebGLRenderer</code></a></p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const canvas = document.querySelector('#c');
--const renderer = new THREE.WebGLRenderer({canvas});
+-const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
 +const renderer = new THREE.WebGLRenderer({
 +  canvas,
 +  alpha: true,
@@ -353,9 +360,9 @@ a border by default.</p>
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

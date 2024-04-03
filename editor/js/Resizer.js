@@ -11,8 +11,8 @@ function Resizer( editor ) {
 
 		if ( event.isPrimary === false ) return;
 
-		dom.ownerDocument.addEventListener( 'pointermove', onPointerMove, false );
-		dom.ownerDocument.addEventListener( 'pointerup', onPointerUp, false );
+		dom.ownerDocument.addEventListener( 'pointermove', onPointerMove );
+		dom.ownerDocument.addEventListener( 'pointerup', onPointerUp );
 
 	}
 
@@ -36,7 +36,7 @@ function Resizer( editor ) {
 
 		const cX = clientX < 0 ? 0 : clientX > offsetWidth ? offsetWidth : clientX;
 
-		const x = offsetWidth - cX;
+		const x = Math.max( 260, offsetWidth - cX ); // .TabbedPanel min-width: 260px
 
 		dom.style.right = x + 'px';
 
@@ -49,7 +49,7 @@ function Resizer( editor ) {
 
 	}
 
-	dom.addEventListener( 'pointerdown', onPointerDown, false );
+	dom.addEventListener( 'pointerdown', onPointerDown );
 
 	return new UIElement( dom );
 

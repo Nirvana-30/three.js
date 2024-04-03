@@ -14,13 +14,22 @@
 			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - curve modifier
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
-			import * as THREE from '../build/three.module.js';
-			import { TransformControls } from './jsm/controls/TransformControls.js';
-			import Stats from './jsm/libs/stats.module.js';
-			import { Flow } from './jsm/modifiers/CurveModifier.js';
-			import { FontLoader } from './jsm/loaders/FontLoader.js';
-			import { TextGeometry } from './jsm/geometries/TextGeometry.js';
+			import * as THREE from 'three';
+			import { TransformControls } from 'three/addons/controls/TransformControls.js';
+			import Stats from 'three/addons/libs/stats.module.js';
+			import { Flow } from 'three/addons/modifiers/CurveModifier.js';
+			import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+			import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 			const ACTION_SELECT = 1, ACTION_NONE = 0;
 			const curveHandles = [];
@@ -86,13 +95,11 @@
 
 				//
 
-				const light = new THREE.DirectionalLight( 0xffaa33 );
+				const light = new THREE.DirectionalLight( 0xffaa33, 3 );
 				light.position.set( - 10, 10, 10 );
-				light.intensity = 1.0;
 				scene.add( light );
 
-				const light2 = new THREE.AmbientLight( 0x003973 );
-				light2.intensity = 1.0;
+				const light2 = new THREE.AmbientLight( 0x003973, 3 );
 				scene.add( light2 );
 
 				//
@@ -103,7 +110,7 @@
 					const geometry = new TextGeometry( 'Hello three.js!', {
 						font: font,
 						size: 0.2,
-						height: 0.05,
+						depth: 0.05,
 						curveSegments: 12,
 						bevelEnabled: true,
 						bevelThickness: 0.02,

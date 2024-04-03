@@ -12,10 +12,19 @@
 			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> ar - cones<br/>(Chrome Android 81+)
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
-			import { ARButton } from './jsm/webxr/ARButton.js';
+			import * as THREE from 'three';
+			import { ARButton } from 'three/addons/webxr/ARButton.js';
 
 			let camera, scene, renderer;
 			let controller;
@@ -32,7 +41,7 @@
 
 				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 20 );
 
-				const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
+				const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 3 );
 				light.position.set( 0.5, 1, 0.25 );
 				scene.add( light );
 

@@ -14,11 +14,20 @@
 
 		<video id="video" style="display:none" autoplay playsinline></video>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 			let camera, scene, renderer, video;
 
@@ -35,6 +44,7 @@
 				video = document.getElementById( 'video' );
 
 				const texture = new THREE.VideoTexture( video );
+				texture.colorSpace = THREE.SRGBColorSpace;
 
 				const geometry = new THREE.PlaneGeometry( 16, 9 );
 				geometry.scale( 0.5, 0.5, 0.5 );

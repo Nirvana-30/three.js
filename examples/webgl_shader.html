@@ -63,9 +63,18 @@
 
 		</script>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
 			let camera, scene, renderer;
 
@@ -101,9 +110,8 @@
 
 				renderer = new THREE.WebGLRenderer();
 				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
 				container.appendChild( renderer.domElement );
-
-				onWindowResize();
 
 				window.addEventListener( 'resize', onWindowResize );
 

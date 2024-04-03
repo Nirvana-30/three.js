@@ -1,236 +1,119 @@
-import { TempNode } from '../core/TempNode.js';
-import { FunctionNode } from '../core/FunctionNode.js';
-import { FloatNode } from '../inputs/FloatNode.js';
-import { PositionNode } from '../accessors/PositionNode.js';
+import Object3DNode from './Object3DNode.js';
+import { addNodeClass } from '../core/Node.js';
+import { NodeUpdateType } from '../core/constants.js';
+//import { sharedUniformGroup } from '../core/UniformGroupNode.js';
+import { nodeImmutable } from '../shadernode/ShaderNode.js';
 
-class CameraNode extends TempNode {
+//const cameraGroup = sharedUniformGroup( 'camera' );
 
-	constructor( scope, camera ) {
+class CameraNode extends Object3DNode {
 
-		super( 'v3' );
+	constructor( scope = CameraNode.POSITION ) {
 
-		this.setScope( scope || CameraNode.POSITION );
-		this.setCamera( camera );
+		super( scope );
 
-	}
+		this.updateType = NodeUpdateType.RENDER;
 
-	setCamera( camera ) {
-
-		this.camera = camera;
-		this.updateFrame = camera !== undefined ? this.onUpdateFrame : undefined;
+		//this._uniformNode.groupNode = cameraGroup;
 
 	}
 
-	setScope( scope ) {
+	getNodeType( builder ) {
 
-		switch ( this.scope ) {
+		const scope = this.scope;
 
-			case CameraNode.DEPTH:
+		if ( scope === CameraNode.PROJECTION_MATRIX || scope === CameraNode.PROJECTION_MATRIX_INVERSE ) {
 
-				delete this.near;
-				delete this.far;
+			return 'mat4';
 
-				break;
+		} else if ( scope === CameraNode.NEAR || scope === CameraNode.FAR || scope === CameraNode.LOG_DEPTH ) {
+
+			return 'float';
 
 		}
 
-		this.scope = scope;
-
-		switch ( scope ) {
-
-			case CameraNode.DEPTH:
-
-				const camera = this.camera;
-
-				this.near = new FloatNode( camera ? camera.near : 1 );
-				this.far = new FloatNode( camera ? camera.far : 1200 );
-
-				break;
-
-		}
+		return super.getNodeType( builder );
 
 	}
 
-	getType( /* builder */ ) {
+	update( frame ) {
 
-		switch ( this.scope ) {
+		const camera = frame.camera;
+		const uniformNode = this._uniformNode;
+		const scope = this.scope;
 
-			case CameraNode.DEPTH:
+		//cameraGroup.needsUpdate = true;
 
-				return 'f';
+		if ( scope === CameraNode.VIEW_MATRIX ) {
 
-		}
+			uniformNode.value = camera.matrixWorldInverse;
 
-		return this.type;
+		} else if ( scope === CameraNode.PROJECTION_MATRIX ) {
 
-	}
+			uniformNode.value = camera.projectionMatrix;
 
-	getUnique( /* builder */ ) {
+		} else if ( scope === CameraNode.PROJECTION_MATRIX_INVERSE ) {
 
-		switch ( this.scope ) {
+			uniformNode.value = camera.projectionMatrixInverse;
 
-			case CameraNode.DEPTH:
-			case CameraNode.TO_VERTEX:
+		} else if ( scope === CameraNode.NEAR ) {
 
-				return true;
+			uniformNode.value = camera.near;
 
-		}
+		} else if ( scope === CameraNode.FAR ) {
 
-		return false;
+			uniformNode.value = camera.far;
 
-	}
+		} else if ( scope === CameraNode.LOG_DEPTH ) {
 
-	getShared( /* builder */ ) {
+			uniformNode.value = 2.0 / ( Math.log( camera.far + 1.0 ) / Math.LN2 );
 
-		switch ( this.scope ) {
+		} else {
 
-			case CameraNode.POSITION:
+			this.object3d = camera;
 
-				return false;
-
-		}
-
-		return true;
-
-	}
-
-	generate( builder, output ) {
-
-		let result;
-
-		switch ( this.scope ) {
-
-			case CameraNode.POSITION:
-
-				result = 'cameraPosition';
-
-				break;
-
-			case CameraNode.DEPTH:
-
-				const depthColor = builder.include( CameraNode.Nodes.depthColor );
-
-				result = depthColor + '( ' + this.near.build( builder, 'f' ) + ', ' + this.far.build( builder, 'f' ) + ' )';
-
-				break;
-
-			case CameraNode.TO_VERTEX:
-
-				result = 'normalize( ' + new PositionNode( PositionNode.WORLD ).build( builder, 'v3' ) + ' - cameraPosition )';
-
-				break;
-
-		}
-
-		return builder.format( result, this.getType( builder ), output );
-
-	}
-
-	onUpdateFrame( /* frame */ ) {
-
-		switch ( this.scope ) {
-
-			case CameraNode.DEPTH:
-
-				const camera = this.camera;
-
-				this.near.value = camera.near;
-				this.far.value = camera.far;
-
-				break;
+			super.update( frame );
 
 		}
 
 	}
 
-	copy( source ) {
+	generate( builder ) {
 
-		super.copy( source );
+		const scope = this.scope;
 
-		this.setScope( source.scope );
+		if ( scope === CameraNode.PROJECTION_MATRIX || scope === CameraNode.PROJECTION_MATRIX_INVERSE ) {
 
-		if ( source.camera ) {
+			this._uniformNode.nodeType = 'mat4';
 
-			this.setCamera( source.camera );
+		} else if ( scope === CameraNode.NEAR || scope === CameraNode.FAR || scope === CameraNode.LOG_DEPTH ) {
 
-		}
-
-		switch ( source.scope ) {
-
-			case CameraNode.DEPTH:
-
-				this.near.number = source.near;
-				this.far.number = source.far;
-
-				break;
+			this._uniformNode.nodeType = 'float';
 
 		}
 
-		return this;
-
-	}
-
-	toJSON( meta ) {
-
-		let data = this.getJSONNode( meta );
-
-		if ( ! data ) {
-
-			data = this.createJSONNode( meta );
-
-			data.scope = this.scope;
-
-			if ( this.camera ) data.camera = this.camera.uuid;
-
-			switch ( this.scope ) {
-
-				case CameraNode.DEPTH:
-
-					data.near = this.near.value;
-					data.far = this.far.value;
-
-					break;
-
-			}
-
-		}
-
-		return data;
+		return super.generate( builder );
 
 	}
 
 }
 
-CameraNode.Nodes = ( function () {
+CameraNode.PROJECTION_MATRIX = 'projectionMatrix';
+CameraNode.PROJECTION_MATRIX_INVERSE = 'projectionMatrixInverse';
+CameraNode.NEAR = 'near';
+CameraNode.FAR = 'far';
+CameraNode.LOG_DEPTH = 'logDepth';
 
-	const depthColor = new FunctionNode( /* glsl */`
-		float depthColor( float mNear, float mFar ) {
+export default CameraNode;
 
-			#ifdef USE_LOGDEPTHBUF_EXT
+export const cameraProjectionMatrix = nodeImmutable( CameraNode, CameraNode.PROJECTION_MATRIX );
+export const cameraProjectionMatrixInverse = nodeImmutable( CameraNode, CameraNode.PROJECTION_MATRIX_INVERSE );
+export const cameraNear = nodeImmutable( CameraNode, CameraNode.NEAR );
+export const cameraFar = nodeImmutable( CameraNode, CameraNode.FAR );
+export const cameraLogDepth = nodeImmutable( CameraNode, CameraNode.LOG_DEPTH );
+export const cameraViewMatrix = nodeImmutable( CameraNode, CameraNode.VIEW_MATRIX );
+export const cameraNormalMatrix = nodeImmutable( CameraNode, CameraNode.NORMAL_MATRIX );
+export const cameraWorldMatrix = nodeImmutable( CameraNode, CameraNode.WORLD_MATRIX );
+export const cameraPosition = nodeImmutable( CameraNode, CameraNode.POSITION );
 
-				float depth = gl_FragDepthEXT / gl_FragCoord.w;
-
-			#else
-
-				float depth = gl_FragCoord.z / gl_FragCoord.w;
-
-			#endif
-
-			return 1.0 - smoothstep( mNear, mFar, depth );
-
-		}`
-	 );
-
-	return {
-		depthColor: depthColor
-	};
-
-} )();
-
-CameraNode.POSITION = 'position';
-CameraNode.DEPTH = 'depth';
-CameraNode.TO_VERTEX = 'toVertex';
-
-CameraNode.prototype.nodeType = 'Camera';
-
-export { CameraNode };
+addNodeClass( 'CameraNode', CameraNode );

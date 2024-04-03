@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – Billboards">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
   </head>
   <body>
     <div class="container">
@@ -167,7 +174,7 @@ is 7260 polygons. That's not that many but of course a more detailed
 3D tree might be 1000-3000 polygons. If they were 3000 polygons each
 then 121 trees would be 363000 polygons to draw.</p>
 <p>Using facades we can bring that number down.</p>
-<p>We could manually create a facade in some painting program but let's write 
+<p>We could manually create a facade in some painting program but let's write
 some code to try to generate one.</p>
 <p>Let's write some code to render an object to a texture
 using a <code class="notranslate" translate="no">RenderTarget</code>. We covered rendering to a <code class="notranslate" translate="no">RenderTarget</code>
@@ -304,9 +311,9 @@ gave you some ideas and suggested some solutions if you decide to use them.</p>
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

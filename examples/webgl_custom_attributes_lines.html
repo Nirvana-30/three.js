@@ -47,14 +47,23 @@
 
 		</script>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { FontLoader } from './jsm/loaders/FontLoader.js';
-			import { TextGeometry } from './jsm/geometries/TextGeometry.js';
+			import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+			import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
-			import Stats from './jsm/libs/stats.module.js';
+			import Stats from 'three/addons/libs/stats.module.js';
 
 			let renderer, scene, camera, stats;
 
@@ -101,7 +110,7 @@
 					font: font,
 
 					size: 50,
-					height: 15,
+					depth: 15,
 					curveSegments: 10,
 
 					bevelThickness: 5,

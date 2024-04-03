@@ -12,22 +12,29 @@
 			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - GLTFLoader<br />
 			Battle Damaged Sci-fi Helmet by
 			<a href="https://sketchfab.com/theblueturtle_" target="_blank" rel="noopener">theblueturtle_</a><br />
-			<a href="https://hdrihaven.com/hdri/?h=royal_esplanade" target="_blank" rel="noopener">Royal Esplanade</a> by <a href="https://hdrihaven.com/" target="_blank" rel="noopener">HDRI Haven</a>
+			<a href="https://hdrihaven.com/hdri/?h=royal_esplanade" target="_blank" rel="noopener">Royal Esplanade</a> from <a href="https://hdrihaven.com/" target="_blank" rel="noopener">HDRI Haven</a>
 		</div>
+
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
 
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
-			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
-			import { RGBELoader } from './jsm/loaders/RGBELoader.js';
-			import { RoughnessMipmapper } from './jsm/utils/RoughnessMipmapper.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+			import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+			import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
 			let camera, scene, renderer;
 
 			init();
-			render();
 
 			function init() {
 
@@ -52,28 +59,19 @@
 
 						// model
 
-						// use of RoughnessMipmapper is optional
-						const roughnessMipmapper = new RoughnessMipmapper( renderer );
-
 						const loader = new GLTFLoader().setPath( 'models/gltf/DamagedHelmet/glTF/' );
-						loader.load( 'DamagedHelmet.gltf', function ( gltf ) {
+						loader.load( 'DamagedHelmet.gltf', async function ( gltf ) {
 
-							gltf.scene.traverse( function ( child ) {
+							const model = gltf.scene;
 
-								if ( child.isMesh ) {
+							// wait until the model can be added to the scene without blocking due to shader compilation
 
-									roughnessMipmapper.generateMipmaps( child.material );
+							await renderer.compileAsync( model, camera, scene );
 
-								}
-
-							} );
-
-							scene.add( gltf.scene );
-
-							roughnessMipmapper.dispose();
+							scene.add( model );
 
 							render();
-
+			
 						} );
 
 					} );
@@ -83,7 +81,6 @@
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				renderer.toneMapping = THREE.ACESFilmicToneMapping;
 				renderer.toneMappingExposure = 1;
-				renderer.outputEncoding = THREE.sRGBEncoding;
 				container.appendChild( renderer.domElement );
 
 				const controls = new OrbitControls( camera, renderer.domElement );

@@ -11,11 +11,20 @@
 		<div id="container"></div>
 		<div id="info"><a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - buffergeometry - particles</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import Stats from './jsm/libs/stats.module.js';
+			import Stats from 'three/addons/libs/stats.module.js';
 
 			let container, stats;
 
@@ -76,7 +85,7 @@
 					const vy = ( y / n ) + 0.5;
 					const vz = ( z / n ) + 0.5;
 
-					color.setRGB( vx, vy, vz );
+					color.setRGB( vx, vy, vz, THREE.SRGBColorSpace );
 
 					const j = ( i + 3 ) * 4;
 

@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – 에서 .OBJ 파일 불러오기">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
     <link rel="stylesheet" href="/manual/ko/lang.css">
   </head>
   <body>
@@ -51,7 +58,7 @@
 하나, <a href="/docs/#api/ko/lights/DirectionalLight"><code class="notranslate" translate="no">DirectionalLight</code></a> 하나가 있는 셈입니다. 또 GUI 관련 코드와 정육면체,
 구체 관련 코드도 지웁니다.</p>
 <p>다음으로 먼저 <a href="/docs/#examples/loaders/OBJLoader"><code class="notranslate" translate="no">OBJLoader</code></a> 모듈을 스크립트에 로드합니다.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import { OBJLoader } from '/examples/jsm/loaders/OBJLoader.js';
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 </pre>
 <p><a href="/docs/#examples/loaders/OBJLoader"><code class="notranslate" translate="no">OBJLoader</code></a>의 인스턴스를 생성한 뒤 .OBJ 파일의 경로와 콜백 함수를 넘겨
 <code class="notranslate" translate="no">load</code> 메서드를 실행합니다. 그리고 콜백 함수에서 불러온 모델을 장면에
@@ -128,10 +135,10 @@ map_Ns windmill_001_base_SPEC.jpg
 
 <p>이제 .MTL 파일에서 사용할 텍스처를 생성했으니 .MTL 파일을 불러오도록 합시다.</p>
 <p><a href="/docs/#examples/loaders/MTLLoader"><code class="notranslate" translate="no">MTLLoader</code></a> 모듈을 불러옵니다.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from '/build/three.module.js';
-import { OrbitControls } from '/examples/jsm/controls/OrbitControls.js';
-import { OBJLoader } from '/examples/jsm/loaders/OBJLoader.js';
-+import { MTLLoader } from '/examples/jsm/loaders/MTLLoader.js';
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
++import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
 </pre>
 <p></p>
 <p>우선 .MTL 파일을 불러와 <code class="notranslate" translate="no">MtlObjBridge</code>로 재질을 만듭니다. 그리고 <a href="/docs/#examples/loaders/OBJLoader"><code class="notranslate" translate="no">OBJLoader</code></a>
@@ -463,7 +470,7 @@ Ns 0.060000
 Ni 1.500000
 d 1.000000
 Tr 0.000000
-Tf 1.000000 1.000000 1.000000 
+Tf 1.000000 1.000000 1.000000
 illum 2
 -map_Kd windmill_diffuse.tga
 +map_Kd windmill_diffuse.jpg
@@ -471,9 +478,9 @@ illum 2
 -map_Ks windmill_spec.tga
 +map_Ks windmill_spec.jpg
 
--map_bump windmill_normal.tga 
--bump windmill_normal.tga 
-+map_bump windmill_normal.jpg 
+-map_bump windmill_normal.tga
+-bump windmill_normal.tga
++map_bump windmill_normal.jpg
 +bump windmill_normal.jpg
 </pre>
 <p>텍스처의 용량을 최적화했으니 이제 불러올 일만 남았습니다. 먼저 아까 했던 것처럼
@@ -529,8 +536,8 @@ illum 2
 </pre>
 <p>문제 #3: <code class="notranslate" translate="no">windmill_normal.jpg</code>가 법선 맵이 아닌 범프 맵임.</p>
 <p>마찬가지로 .MTL 파일을 수정해줍니다.</p>
-<pre class="prettyprint showlinemods notranslate lang-mtl" translate="no">-map_bump windmill_normal.jpg 
--bump windmill_normal.jpg 
+<pre class="prettyprint showlinemods notranslate lang-mtl" translate="no">-map_bump windmill_normal.jpg
+-bump windmill_normal.jpg
 +norm windmill_normal.jpg
 </pre>
 <p>위 변경 사항을 모두 반영하면 재질이 정상적으로 적용될 겁니다.</p>
@@ -581,9 +588,9 @@ illum 2
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

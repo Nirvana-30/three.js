@@ -1,21 +1,28 @@
 <!DOCTYPE html><html lang="en"><head>
     <meta charset="utf-8">
-    <title>and Shadertoy</title>
+    <title>Three.js and Shadertoy</title>
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – and Shadertoy">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
   </head>
   <body>
     <div class="container">
       <div class="lesson-title">
-        <h1>and Shadertoy</h1>
+        <h1>Three.js and Shadertoy</h1>
       </div>
       <div class="lesson">
         <div class="lesson-main">
@@ -40,7 +47,7 @@ traditional techniques, drawing buildings made from triangles with textures on
 them, etc...</p>
 <p>Still, let's go over using a Shadertoy shader with three.js.</p>
 <p>This is the default shadertoy shader if you <a href="https://www.shadertoy.com/new">pick "New" on shadertoy.com</a>, at least as of January 2019.</p>
-<pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">// By iq: https://www.shadertoy.com/user/iq  
+<pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">// By iq: https://www.shadertoy.com/user/iq
 // license: Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
@@ -102,7 +109,7 @@ so let's grab that example but remove the cubes. It's pretty short so here's the
 entire thing</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function main() {
   const canvas = document.querySelector('#c');
-  const renderer = new THREE.WebGLRenderer({canvas});
+  const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
   renderer.autoClearColor = false;
 
   const camera = new THREE.OrthographicCamera(
@@ -161,7 +168,7 @@ canvas. For now all we'll get is a red canvas as our plane is using a red
 uniform vec3 iResolution;
 uniform float iTime;
 
-// By iq: https://www.shadertoy.com/user/iq  
+// By iq: https://www.shadertoy.com/user/iq
 // license: Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
@@ -269,7 +276,7 @@ computing the color of every pixel means those examples run very slow.</p>
 <a href="https://www.shadertoy.com/view/MsXSzM">this one</a>. </p>
 <pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">// By Daedelus: https://www.shadertoy.com/user/Daedelus
 // license: Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
-#define TIMESCALE 0.25 
+#define TIMESCALE 0.25
 #define TILES 8
 #define COLOR 0.7, 1.6, 2.8
 
@@ -289,7 +296,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     fragColor = vec4(COLOR, 1.0) * p;
 }
 </pre>
-<p>Passing a texture into a shader is similar to 
+<p>Passing a texture into a shader is similar to
 <a href="textures.html">passing one into a normal material</a> but we need to set
 up the texture on the uniforms.</p>
 <p>First we'll add the uniform for the texture to the shader. They're referred to
@@ -395,9 +402,9 @@ amazing, impressive, beautiful, and you can learn a ton by seeing how they work.
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

@@ -21,14 +21,23 @@
 			<a href="https://threejs.org" target="_blank" rel="noopener noreferrer">three.js</a> - OBB (Oriented Bounding Box)
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { OBB } from './jsm/math/OBB.js';
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { OBB } from 'three/addons/math/OBB.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-			import Stats from './jsm/libs/stats.module.js';
+			import Stats from 'three/addons/libs/stats.module.js';
 
 			let camera, scene, renderer, clock, controls, stats, raycaster, hitbox;
 
@@ -49,7 +58,7 @@
 
 				raycaster = new THREE.Raycaster();
 
-				const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x222222, 1.5 );
+				const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x222222, 4 );
 				hemiLight.position.set( 1, 1, 1 );
 				scene.add( hemiLight );
 

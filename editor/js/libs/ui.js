@@ -142,9 +142,12 @@ class UIElement {
 
 // properties
 
-const properties = [ 'position', 'left', 'top', 'right', 'bottom', 'width', 'height', 'border', 'borderLeft',
-	'borderTop', 'borderRight', 'borderBottom', 'borderColor', 'display', 'overflow', 'margin', 'marginLeft', 'marginTop', 'marginRight', 'marginBottom', 'padding', 'paddingLeft', 'paddingTop', 'paddingRight', 'paddingBottom', 'verticalAlign', 'color',
-	'background', 'backgroundColor', 'opacity', 'fontSize', 'fontWeight', 'textAlign', 'textDecoration', 'textTransform', 'cursor', 'zIndex' ];
+const properties = [ 'position', 'left', 'top', 'right', 'bottom', 'width', 'height',
+	'display', 'verticalAlign', 'overflow', 'color', 'background', 'backgroundColor', 'opacity',
+	'border', 'borderLeft', 'borderTop', 'borderRight', 'borderBottom', 'borderColor',
+	'margin', 'marginLeft', 'marginTop', 'marginRight', 'marginBottom',
+	'padding', 'paddingLeft', 'paddingTop', 'paddingRight', 'paddingBottom',
+	'fontSize', 'fontWeight', 'textAlign', 'textDecoration', 'textTransform', 'cursor', 'zIndex' ];
 
 properties.forEach( function ( property ) {
 
@@ -170,7 +173,7 @@ events.forEach( function ( event ) {
 
 	UIElement.prototype[ method ] = function ( callback ) {
 
-		this.dom.addEventListener( event.toLowerCase(), callback.bind( this ), false );
+		this.dom.addEventListener( event.toLowerCase(), callback.bind( this ) );
 
 		return this;
 
@@ -273,7 +276,7 @@ class UIInput extends UIElement {
 
 			event.stopPropagation();
 
-		}, false );
+		} );
 
 		this.setValue( text );
 
@@ -323,7 +326,7 @@ class UITextArea extends UIElement {
 
 			}
 
-		}, false );
+		} );
 
 	}
 
@@ -353,6 +356,12 @@ class UISelect extends UIElement {
 		this.dom.style.padding = '2px';
 
 		this.dom.setAttribute( 'autocomplete', 'off' );
+
+		this.dom.addEventListener( 'pointerdown', function ( event ) {
+
+			event.stopPropagation();
+
+		} );
 
 	}
 
@@ -419,6 +428,14 @@ class UICheckbox extends UIElement {
 
 		this.dom.className = 'Checkbox';
 		this.dom.type = 'checkbox';
+
+		this.dom.addEventListener( 'pointerdown', function ( event ) {
+
+			// Workaround for TransformControls blocking events in Viewport.Controls checkboxes
+
+			event.stopPropagation();
+
+		} );
 
 		this.setValue( boolean );
 
@@ -536,6 +553,8 @@ class UINumber extends UIElement {
 
 		function onMouseDown( event ) {
 
+			if ( document.activeElement === scope.dom ) return;
+
 			event.preventDefault();
 
 			distance = 0;
@@ -545,8 +564,8 @@ class UINumber extends UIElement {
 			prevPointer.x = event.clientX;
 			prevPointer.y = event.clientY;
 
-			document.addEventListener( 'mousemove', onMouseMove, false );
-			document.addEventListener( 'mouseup', onMouseUp, false );
+			document.addEventListener( 'mousemove', onMouseMove );
+			document.addEventListener( 'mouseup', onMouseUp );
 
 		}
 
@@ -576,8 +595,8 @@ class UINumber extends UIElement {
 
 		function onMouseUp() {
 
-			document.removeEventListener( 'mousemove', onMouseMove, false );
-			document.removeEventListener( 'mouseup', onMouseUp, false );
+			document.removeEventListener( 'mousemove', onMouseMove );
+			document.removeEventListener( 'mouseup', onMouseUp );
 
 			if ( Math.abs( distance ) < 2 ) {
 
@@ -599,14 +618,16 @@ class UINumber extends UIElement {
 				prevPointer.x = event.touches[ 0 ].pageX;
 				prevPointer.y = event.touches[ 0 ].pageY;
 
-				document.addEventListener( 'touchmove', onTouchMove, false );
-				document.addEventListener( 'touchend', onTouchEnd, false );
+				document.addEventListener( 'touchmove', onTouchMove, { passive: false } );
+				document.addEventListener( 'touchend', onTouchEnd );
 
 			}
 
 		}
 
 		function onTouchMove( event ) {
+
+			event.preventDefault();
 
 			const currentValue = scope.value;
 
@@ -634,8 +655,8 @@ class UINumber extends UIElement {
 
 			if ( event.touches.length === 0 ) {
 
-				document.removeEventListener( 'touchmove', onTouchMove, false );
-				document.removeEventListener( 'touchend', onTouchEnd, false );
+				document.removeEventListener( 'touchmove', onTouchMove );
+				document.removeEventListener( 'touchend', onTouchEnd );
 
 			}
 
@@ -689,12 +710,12 @@ class UINumber extends UIElement {
 
 		onBlur();
 
-		this.dom.addEventListener( 'keydown', onKeyDown, false );
-		this.dom.addEventListener( 'mousedown', onMouseDown, false );
-		this.dom.addEventListener( 'touchstart', onTouchStart, false );
-		this.dom.addEventListener( 'change', onChange, false );
-		this.dom.addEventListener( 'focus', onFocus, false );
-		this.dom.addEventListener( 'blur', onBlur, false );
+		this.dom.addEventListener( 'keydown', onKeyDown );
+		this.dom.addEventListener( 'mousedown', onMouseDown );
+		this.dom.addEventListener( 'touchstart', onTouchStart, { passive: false } );
+		this.dom.addEventListener( 'change', onChange );
+		this.dom.addEventListener( 'focus', onFocus );
+		this.dom.addEventListener( 'blur', onBlur );
 
 	}
 
@@ -802,6 +823,8 @@ class UIInteger extends UIElement {
 
 		function onMouseDown( event ) {
 
+			if ( document.activeElement === scope.dom ) return;
+
 			event.preventDefault();
 
 			distance = 0;
@@ -811,8 +834,8 @@ class UIInteger extends UIElement {
 			prevPointer.x = event.clientX;
 			prevPointer.y = event.clientY;
 
-			document.addEventListener( 'mousemove', onMouseMove, false );
-			document.addEventListener( 'mouseup', onMouseUp, false );
+			document.addEventListener( 'mousemove', onMouseMove );
+			document.addEventListener( 'mouseup', onMouseUp );
 
 		}
 
@@ -842,8 +865,8 @@ class UIInteger extends UIElement {
 
 		function onMouseUp() {
 
-			document.removeEventListener( 'mousemove', onMouseMove, false );
-			document.removeEventListener( 'mouseup', onMouseUp, false );
+			document.removeEventListener( 'mousemove', onMouseMove );
+			document.removeEventListener( 'mouseup', onMouseUp );
 
 			if ( Math.abs( distance ) < 2 ) {
 
@@ -902,11 +925,11 @@ class UIInteger extends UIElement {
 
 		onBlur();
 
-		this.dom.addEventListener( 'keydown', onKeyDown, false );
-		this.dom.addEventListener( 'mousedown', onMouseDown, false );
-		this.dom.addEventListener( 'change', onChange, false );
-		this.dom.addEventListener( 'focus', onFocus, false );
-		this.dom.addEventListener( 'blur', onBlur, false );
+		this.dom.addEventListener( 'keydown', onKeyDown );
+		this.dom.addEventListener( 'mousedown', onMouseDown );
+		this.dom.addEventListener( 'change', onChange );
+		this.dom.addEventListener( 'focus', onFocus );
+		this.dom.addEventListener( 'blur', onBlur );
 
 	}
 
@@ -1186,7 +1209,7 @@ class UIListbox extends UIDiv {
 
 			const item = this.items[ i ];
 
-			const listitem = new UIListbox.ListboxItem( this );
+			const listitem = new ListboxItem( this );
 			listitem.setId( item.id || `Listbox-${i}` );
 			listitem.setTextContent( item.name || item.type );
 			this.add( listitem );
@@ -1273,7 +1296,7 @@ class ListboxItem extends UIDiv {
 
 		}
 
-		this.dom.addEventListener( 'click', onClick, false );
+		this.dom.addEventListener( 'click', onClick );
 
 	}
 

@@ -70,10 +70,19 @@
 		}
 	</script>
 
-	<script type="module">
-		import * as THREE from '../build/three.module.js';
+	<script type="importmap">
+		{
+			"imports": {
+				"three": "../build/three.module.js",
+				"three/addons/": "./jsm/"
+			}
+		}
+	</script>
 
-		import Stats from './jsm/libs/stats.module.js';
+	<script type="module">
+		import * as THREE from 'three';
+
+		import Stats from 'three/addons/libs/stats.module.js';
 
 		let container, stats;
 
@@ -81,15 +90,6 @@
 		let geometry, material, mesh;
 
 		function init() {
-
-			renderer = new THREE.WebGLRenderer();
-
-			if ( renderer.capabilities.isWebGL2 === false && renderer.extensions.has( 'ANGLE_instanced_arrays' ) === false ) {
-
-				document.getElementById( 'notSupported' ).style.display = '';
-				return false;
-
-			}
 
 			container = document.createElement( 'div' );
 			document.body.appendChild( container );
@@ -121,8 +121,8 @@
 
 			material = new THREE.RawShaderMaterial( {
 				uniforms: {
-					"map": { value: new THREE.TextureLoader().load( 'textures/sprites/circle.png' ) },
-					"time": { value: 0.0 }
+					'map': { value: new THREE.TextureLoader().load( 'textures/sprites/circle.png' ) },
+					'time': { value: 0.0 }
 				},
 				vertexShader: document.getElementById( 'vshader' ).textContent,
 				fragmentShader: document.getElementById( 'fshader' ).textContent,
@@ -134,6 +134,7 @@
 			mesh.scale.set( 500, 500, 500 );
 			scene.add( mesh );
 
+			renderer = new THREE.WebGLRenderer();
 			renderer.setPixelRatio( window.devicePixelRatio );
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			container.appendChild( renderer.domElement );
@@ -169,7 +170,7 @@
 
 			const time = performance.now() * 0.0005;
 
-			material.uniforms[ "time" ].value = time;
+			material.uniforms[ 'time' ].value = time;
 
 			mesh.rotation.x = time * 0.2;
 			mesh.rotation.y = time * 0.4;

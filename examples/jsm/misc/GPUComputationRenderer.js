@@ -10,7 +10,7 @@ import {
 	Scene,
 	ShaderMaterial,
 	WebGLRenderTarget
-} from '../../../build/three.module.js';
+} from 'three';
 
 /**
  * GPUComputationRenderer, based on SimulationRenderer by zz85
@@ -171,12 +171,6 @@ class GPUComputationRenderer {
 
 		this.init = function () {
 
-			if ( renderer.capabilities.isWebGL2 === false && renderer.extensions.has( 'OES_texture_float' ) === false ) {
-
-				return 'No OES_texture_float support for float textures.';
-
-			}
-
 			if ( renderer.capabilities.maxVertexTextures === 0 ) {
 
 				return 'No support for vertex shader textures.';
@@ -288,6 +282,32 @@ class GPUComputationRenderer {
 
 		};
 
+		this.dispose = function () {
+
+			mesh.geometry.dispose();
+			mesh.material.dispose();
+
+			const variables = this.variables;
+
+			for ( let i = 0; i < variables.length; i ++ ) {
+
+				const variable = variables[ i ];
+
+				if ( variable.initialValueTexture ) variable.initialValueTexture.dispose();
+
+				const renderTargets = variable.renderTargets;
+
+				for ( let j = 0; j < renderTargets.length; j ++ ) {
+
+					const renderTarget = renderTargets[ j ];
+					renderTarget.dispose();
+
+				}
+
+			}
+
+		};
+
 		function addResolutionDefine( materialShader ) {
 
 			materialShader.defines.resolution = 'vec2( ' + sizeX.toFixed( 1 ) + ', ' + sizeY.toFixed( 1 ) + ' )';
@@ -304,6 +324,7 @@ class GPUComputationRenderer {
 			uniforms = uniforms || {};
 
 			const material = new ShaderMaterial( {
+				name: 'GPUComputationShader',
 				uniforms: uniforms,
 				vertexShader: getPassThroughVertexShader(),
 				fragmentShader: computeFragmentShader
@@ -369,10 +390,18 @@ class GPUComputationRenderer {
 
 			const currentRenderTarget = renderer.getRenderTarget();
 
+			const currentXrEnabled = renderer.xr.enabled;
+			const currentShadowAutoUpdate = renderer.shadowMap.autoUpdate;
+
+			renderer.xr.enabled = false; // Avoid camera modification
+			renderer.shadowMap.autoUpdate = false; // Avoid re-computing shadows
 			mesh.material = material;
 			renderer.setRenderTarget( output );
 			renderer.render( scene, camera );
 			mesh.material = passThruShader;
+
+			renderer.xr.enabled = currentXrEnabled;
+			renderer.shadowMap.autoUpdate = currentShadowAutoUpdate;
 
 			renderer.setRenderTarget( currentRenderTarget );
 

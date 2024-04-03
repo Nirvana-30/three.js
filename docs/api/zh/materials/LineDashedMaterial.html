@@ -11,7 +11,10 @@
 
 		<h1>虚线材质([name])</h1>
 
-		<p class="desc">一种用于绘制虚线样式几何体的材质。</p>
+		<p class="desc">
+			一种用于绘制虚线样式几何体的材质。<br />
+			Note: You must call [page:Line.computeLineDistances]() when using [name].
+		</p>
 
 		<h2>代码示例</h2>
 
@@ -47,6 +50,11 @@
 
 		<h3>[property:number gapSize]</h3>
 		<p>间隙的大小，默认值为 *1*。</p>
+
+		<h3>[property:Boolean isLineDashedMaterial]</h3>
+		<p>
+			Read-only flag to check if a given object is of type [name].
+		</p>
 
 		<h3>[property:number scale]</h3>
 		<p>线条中虚线部分的占比。默认值为 *1*。</p>

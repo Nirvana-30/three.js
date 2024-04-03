@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – 불필요한 렌더링 없애기">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
     <link rel="stylesheet" href="/manual/ko/lang.css">
   </head>
   <body>
@@ -40,8 +47,8 @@ requestAnimationFrame(render);
 <p><a href="responsive.html">반응형 디자인에 관한 글</a>에서 썼던 예제를 수정해
 필요에 따른 렌더링을 구현해봅시다.</p>
 <p>먼저 뭔가 변화를 일으킬 수 있는 요소가 필요하니 <a href="/docs/#examples/controls/OrbitControls"><code class="notranslate" translate="no">OrbitControls</code></a>를 추가합니다.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from '/build/three.module.js';
-+import { OrbitControls } from '/examples/jsm/controls/OrbitControls.js';
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from 'three';
++import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 ...
 
@@ -163,9 +170,9 @@ render();
 
 <p></p>
 <p>간단한 lil-gui를 추가해 반복 렌더링 여부를 제어할 수 있도록 하겠습니다.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from '/build/three.module.js';
-import { OrbitControls } from '/examples/jsm/controls/OrbitControls.js';
-+import { GUI } from '/examples/jsm/libs/lil-gui.module.min.js';
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
++import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 </pre>
 <p>먼저 각 정육면체의 색과 x축 스케일을 조정하는 GUI를 추가합니다. <a href="lights.html">조명에 관한 글</a>에서
 썼던 <code class="notranslate" translate="no">ColorGUIHelper</code>를 가져와 쓰도록 하죠.</p>
@@ -211,9 +218,9 @@ Three.js를 사용할 때는 이렇게 렌더링 루프를 제어할 일이 없�
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

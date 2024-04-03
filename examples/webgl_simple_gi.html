@@ -12,11 +12,20 @@
 			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - simple global illumination (<a href="http://www.iquilezles.org/www/articles/simplegi/simplegi.htm">article</a>)
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 			class GIMesh extends THREE.Mesh {
 
@@ -43,7 +52,7 @@
 				scene.updateMatrixWorld( true );
 
 				let clone = scene.clone();
-				clone.autoUpdate = false;
+				clone.matrixWorldAutoUpdate = false;
 
 				const rt = new THREE.WebGLRenderTarget( SIZE, SIZE );
 
@@ -119,14 +128,13 @@
 
 					}
 
-					attributes.color.updateRange.offset = startVertex * 3;
-					attributes.color.updateRange.count = ( currentVertex - startVertex ) * 3;
+					attributes.color.addUpdateRange( startVertex * 3, ( currentVertex - startVertex ) * 3 );
 					attributes.color.needsUpdate = true;
 
 					if ( currentVertex >= totalVertex ) {
 
 						clone = scene.clone();
-						clone.autoUpdate = false;
+						clone.matrixWorldAutoUpdate = false;
 
 						bounces ++;
 						currentVertex = 0;

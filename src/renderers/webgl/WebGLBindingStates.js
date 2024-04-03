@@ -1,57 +1,31 @@
-﻿function WebGLBindingStates( gl, extensions, attributes, capabilities ) {
+﻿import { IntType } from '../../constants.js';
+
+function WebGLBindingStates( gl, attributes ) {
 
 	const maxVertexAttributes = gl.getParameter( gl.MAX_VERTEX_ATTRIBS );
-
-	const extension = capabilities.isWebGL2 ? null : extensions.get( 'OES_vertex_array_object' );
-	const vaoAvailable = capabilities.isWebGL2 || extension !== null;
 
 	const bindingStates = {};
 
 	const defaultState = createBindingState( null );
 	let currentState = defaultState;
+	let forceUpdate = false;
 
 	function setup( object, material, program, geometry, index ) {
 
 		let updateBuffers = false;
 
-		if ( vaoAvailable ) {
+		const state = getBindingState( geometry, program, material );
 
-			const state = getBindingState( geometry, program, material );
+		if ( currentState !== state ) {
 
-			if ( currentState !== state ) {
-
-				currentState = state;
-				bindVertexArrayObject( currentState.object );
-
-			}
-
-			updateBuffers = needsUpdate( geometry, index );
-
-			if ( updateBuffers ) saveCache( geometry, index );
-
-		} else {
-
-			const wireframe = ( material.wireframe === true );
-
-			if ( currentState.geometry !== geometry.id ||
-				currentState.program !== program.id ||
-				currentState.wireframe !== wireframe ) {
-
-				currentState.geometry = geometry.id;
-				currentState.program = program.id;
-				currentState.wireframe = wireframe;
-
-				updateBuffers = true;
-
-			}
+			currentState = state;
+			bindVertexArrayObject( currentState.object );
 
 		}
 
-		if ( object.isInstancedMesh === true ) {
+		updateBuffers = needsUpdate( object, geometry, program, index );
 
-			updateBuffers = true;
-
-		}
+		if ( updateBuffers ) saveCache( object, geometry, program, index );
 
 		if ( index !== null ) {
 
@@ -59,7 +33,9 @@
 
 		}
 
-		if ( updateBuffers ) {
+		if ( updateBuffers || forceUpdate ) {
+
+			forceUpdate = false;
 
 			setupVertexAttributes( object, material, program, geometry );
 
@@ -75,25 +51,19 @@
 
 	function createVertexArrayObject() {
 
-		if ( capabilities.isWebGL2 ) return gl.createVertexArray();
-
-		return extension.createVertexArrayOES();
+		return gl.createVertexArray();
 
 	}
 
 	function bindVertexArrayObject( vao ) {
 
-		if ( capabilities.isWebGL2 ) return gl.bindVertexArray( vao );
-
-		return extension.bindVertexArrayOES( vao );
+		return gl.bindVertexArray( vao );
 
 	}
 
 	function deleteVertexArrayObject( vao ) {
 
-		if ( capabilities.isWebGL2 ) return gl.deleteVertexArray( vao );
-
-		return extension.deleteVertexArrayOES( vao );
+		return gl.deleteVertexArray( vao );
 
 	}
 
@@ -164,25 +134,40 @@
 
 	}
 
-	function needsUpdate( geometry, index ) {
+	function needsUpdate( object, geometry, program, index ) {
 
 		const cachedAttributes = currentState.attributes;
 		const geometryAttributes = geometry.attributes;
 
 		let attributesNum = 0;
 
-		for ( const key in geometryAttributes ) {
+		const programAttributes = program.getAttributes();
 
-			const cachedAttribute = cachedAttributes[ key ];
-			const geometryAttribute = geometryAttributes[ key ];
+		for ( const name in programAttributes ) {
 
-			if ( cachedAttribute === undefined ) return true;
+			const programAttribute = programAttributes[ name ];
 
-			if ( cachedAttribute.attribute !== geometryAttribute ) return true;
+			if ( programAttribute.location >= 0 ) {
 
-			if ( cachedAttribute.data !== geometryAttribute.data ) return true;
+				const cachedAttribute = cachedAttributes[ name ];
+				let geometryAttribute = geometryAttributes[ name ];
 
-			attributesNum ++;
+				if ( geometryAttribute === undefined ) {
+
+					if ( name === 'instanceMatrix' && object.instanceMatrix ) geometryAttribute = object.instanceMatrix;
+					if ( name === 'instanceColor' && object.instanceColor ) geometryAttribute = object.instanceColor;
+
+				}
+
+				if ( cachedAttribute === undefined ) return true;
+
+				if ( cachedAttribute.attribute !== geometryAttribute ) return true;
+
+				if ( geometryAttribute && cachedAttribute.data !== geometryAttribute.data ) return true;
+
+				attributesNum ++;
+
+			}
 
 		}
 
@@ -194,28 +179,43 @@
 
 	}
 
-	function saveCache( geometry, index ) {
+	function saveCache( object, geometry, program, index ) {
 
 		const cache = {};
 		const attributes = geometry.attributes;
 		let attributesNum = 0;
 
-		for ( const key in attributes ) {
+		const programAttributes = program.getAttributes();
 
-			const attribute = attributes[ key ];
+		for ( const name in programAttributes ) {
 
-			const data = {};
-			data.attribute = attribute;
+			const programAttribute = programAttributes[ name ];
 
-			if ( attribute.data ) {
+			if ( programAttribute.location >= 0 ) {
 
-				data.data = attribute.data;
+				let attribute = attributes[ name ];
+
+				if ( attribute === undefined ) {
+
+					if ( name === 'instanceMatrix' && object.instanceMatrix ) attribute = object.instanceMatrix;
+					if ( name === 'instanceColor' && object.instanceColor ) attribute = object.instanceColor;
+
+				}
+
+				const data = {};
+				data.attribute = attribute;
+
+				if ( attribute && attribute.data ) {
+
+					data.data = attribute.data;
+
+				}
+
+				cache[ name ] = data;
+
+				attributesNum ++;
 
 			}
-
-			cache[ key ] = data;
-
-			attributesNum ++;
 
 		}
 
@@ -261,9 +261,7 @@
 
 		if ( attributeDivisors[ attribute ] !== meshPerAttribute ) {
 
-			const extension = capabilities.isWebGL2 ? gl : extensions.get( 'ANGLE_instanced_arrays' );
-
-			extension[ capabilities.isWebGL2 ? 'vertexAttribDivisor' : 'vertexAttribDivisorANGLE' ]( attribute, meshPerAttribute );
+			gl.vertexAttribDivisor( attribute, meshPerAttribute );
 			attributeDivisors[ attribute ] = meshPerAttribute;
 
 		}
@@ -288,9 +286,9 @@
 
 	}
 
-	function vertexAttribPointer( index, size, type, normalized, stride, offset ) {
+	function vertexAttribPointer( index, size, type, normalized, stride, offset, integer ) {
 
-		if ( capabilities.isWebGL2 === true && ( type === gl.INT || type === gl.UNSIGNED_INT ) ) {
+		if ( integer === true ) {
 
 			gl.vertexAttribIPointer( index, size, type, stride, offset );
 
@@ -303,12 +301,6 @@
 	}
 
 	function setupVertexAttributes( object, material, program, geometry ) {
-
-		if ( capabilities.isWebGL2 === false && ( object.isInstancedMesh || geometry.isInstancedBufferGeometry ) ) {
-
-			if ( extensions.get( 'ANGLE_instanced_arrays' ) === null ) return;
-
-		}
 
 		initAttributes();
 
@@ -348,13 +340,17 @@
 					const type = attribute.type;
 					const bytesPerElement = attribute.bytesPerElement;
 
+					// check for integer attributes
+
+					const integer = ( type === gl.INT || type === gl.UNSIGNED_INT || geometryAttribute.gpuType === IntType );
+
 					if ( geometryAttribute.isInterleavedBufferAttribute ) {
 
 						const data = geometryAttribute.data;
 						const stride = data.stride;
 						const offset = geometryAttribute.offset;
 
-						if ( data && data.isInstancedInterleavedBuffer ) {
+						if ( data.isInstancedInterleavedBuffer ) {
 
 							for ( let i = 0; i < programAttribute.locationSize; i ++ ) {
 
@@ -388,7 +384,8 @@
 								type,
 								normalized,
 								stride * bytesPerElement,
-								( offset + ( size / programAttribute.locationSize ) * i ) * bytesPerElement
+								( offset + ( size / programAttribute.locationSize ) * i ) * bytesPerElement,
+								integer
 							);
 
 						}
@@ -429,7 +426,8 @@
 								type,
 								normalized,
 								size * bytesPerElement,
-								( size / programAttribute.locationSize ) * i * bytesPerElement
+								( size / programAttribute.locationSize ) * i * bytesPerElement,
+								integer
 							);
 
 						}
@@ -556,6 +554,7 @@
 	function reset() {
 
 		resetDefaultState();
+		forceUpdate = true;
 
 		if ( currentState === defaultState ) return;
 
@@ -564,7 +563,7 @@
 
 	}
 
-	// for backward-compatilibity
+	// for backward-compatibility
 
 	function resetDefaultState() {
 

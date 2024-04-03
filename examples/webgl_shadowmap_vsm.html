@@ -11,14 +11,23 @@
 		<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - VSM Shadows example by <a href="https://github.com/supereggbert">Paul Brunt</a>
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import Stats from './jsm/libs/stats.module.js';
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
+			import Stats from 'three/addons/libs/stats.module.js';
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 			let camera, scene, renderer, clock, stats;
 			let dirLight, spotLight;
@@ -88,7 +97,7 @@
 
 				scene.add( new THREE.AmbientLight( 0x444444 ) );
 
-				spotLight = new THREE.SpotLight( 0xff8888 );
+				spotLight = new THREE.SpotLight( 0xff8888, 400 );
 				spotLight.angle = Math.PI / 5;
 				spotLight.penumbra = 0.3;
 				spotLight.position.set( 8, 10, 5 );
@@ -102,7 +111,7 @@
 				scene.add( spotLight );
 
 
-				dirLight = new THREE.DirectionalLight( 0x8888ff );
+				dirLight = new THREE.DirectionalLight( 0x8888ff, 3 );
 				dirLight.position.set( 3, 12, 17 );
 				dirLight.castShadow = true;
 				dirLight.shadow.camera.near = 0.1;

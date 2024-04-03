@@ -22,12 +22,21 @@
 		music by <a href="http://www.newgrounds.com/audio/listen/376737" target="_blank" rel="noopener noreferrer">skullbeatz</a>
 	</div>
 
-	<script type="module">
-		import * as THREE from '../build/three.module.js';
+	<script type="importmap">
+		{
+			"imports": {
+				"three": "../build/three.module.js",
+				"three/addons/": "./jsm/"
+			}
+		}
+	</script>
 
-		import { OrbitControls } from './jsm/controls/OrbitControls.js';
-		import { PositionalAudioHelper } from './jsm/helpers/PositionalAudioHelper.js';
-		import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
+	<script type="module">
+		import * as THREE from 'three';
+
+		import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+		import { PositionalAudioHelper } from 'three/addons/helpers/PositionalAudioHelper.js';
+		import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 		let scene, camera, renderer;
 
@@ -56,11 +65,11 @@
 
 			//
 
-			const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
+			const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x8d8d8d, 3 );
 			hemiLight.position.set( 0, 20, 0 );
 			scene.add( hemiLight );
 
-			const dirLight = new THREE.DirectionalLight( 0xffffff );
+			const dirLight = new THREE.DirectionalLight( 0xffffff, 3 );
 			dirLight.position.set( 5, 5, 0 );
 			dirLight.castShadow = true;
 			dirLight.shadow.camera.top = 1;
@@ -75,12 +84,12 @@
 
 			//
 
-			const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 50, 50 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
+			const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 50, 50 ), new THREE.MeshPhongMaterial( { color: 0xcbcbcb, depthWrite: false } ) );
 			mesh.rotation.x = - Math.PI / 2;
 			mesh.receiveShadow = true;
 			scene.add( mesh );
 
-			const grid = new THREE.GridHelper( 50, 50, 0x888888, 0x888888 );
+			const grid = new THREE.GridHelper( 50, 50, 0xc1c1c1, 0xc1c1c1 );
 			scene.add( grid );
 
 			//
@@ -139,9 +148,8 @@
 			//
 
 			renderer = new THREE.WebGLRenderer( { antialias: true } );
-			renderer.setSize( window.innerWidth, window.innerHeight );
 			renderer.setPixelRatio( window.devicePixelRatio );
-			renderer.outputEncoding = THREE.sRGBEncoding;
+			renderer.setSize( window.innerWidth, window.innerHeight );
 			renderer.shadowMap.enabled = true;
 			container.appendChild( renderer.domElement );
 

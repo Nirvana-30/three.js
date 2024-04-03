@@ -7,16 +7,25 @@
 		<link type="text/css" rel="stylesheet" href="main.css">
 	</head>
 	<body>
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
 
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
-			import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
-			import { RenderPass } from './jsm/postprocessing/RenderPass.js';
-			import { AfterimagePass } from './jsm/postprocessing/AfterimagePass.js';
+			import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+			import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+			import { AfterimagePass } from 'three/addons/postprocessing/AfterimagePass.js';
+			import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
 			let camera, scene, renderer, composer;
 			let mesh;
@@ -59,16 +68,29 @@
 				afterimagePass = new AfterimagePass();
 				composer.addPass( afterimagePass );
 
+				const outputPass = new OutputPass();
+				composer.addPass( outputPass );
+
 				window.addEventListener( 'resize', onWindowResize );
 
-				if ( typeof TESTING !== 'undefined' ) { for ( let i = 0; i < 45; i ++ ) { render(); }; };
+				if ( typeof TESTING !== 'undefined' ) {
+
+					for ( let i = 0; i < 45; i ++ ) {
+
+						render();
+
+					}
+
+
+
+				}
 
 			}
 
 			function createGUI() {
 
-				const gui = new GUI( { name: 'Damp setting' } );
-				gui.add( afterimagePass.uniforms[ "damp" ], 'value', 0, 1 ).step( 0.001 );
+				const gui = new GUI( { title: 'Damp setting' } );
+				gui.add( afterimagePass.uniforms[ 'damp' ], 'value', 0, 1 ).step( 0.001 );
 				gui.add( params, 'enable' );
 
 			}
@@ -88,15 +110,10 @@
 				mesh.rotation.x += 0.005;
 				mesh.rotation.y += 0.01;
 
-				if ( params.enable ) {
+				afterimagePass.enabled = params.enable;
 
-					composer.render();
+				composer.render();
 
-				} else {
-
-					renderer.render( scene, camera );
-
-				}
 
 			}
 

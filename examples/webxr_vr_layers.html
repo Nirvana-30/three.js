@@ -20,15 +20,24 @@
 
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
-			import { HTMLMesh } from './jsm/interactive/HTMLMesh.js';
-			import { InteractiveGroup } from './jsm/interactive/InteractiveGroup.js';
-			import { VRButton } from './jsm/webxr/VRButton.js';
-			import { XRControllerModelFactory } from './jsm/webxr/XRControllerModelFactory.js';
-			import { XRHandModelFactory } from './jsm/webxr/XRHandModelFactory.js';
+			import * as THREE from 'three';
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+			import { HTMLMesh } from 'three/addons/interactive/HTMLMesh.js';
+			import { InteractiveGroup } from 'three/addons/interactive/InteractiveGroup.js';
+			import { VRButton } from 'three/addons/webxr/VRButton.js';
+			import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFactory.js';
+			import { XRHandModelFactory } from 'three/addons/webxr/XRHandModelFactory.js';
 
 			let camera, scene, renderer;
 			let video;
@@ -106,18 +115,17 @@
 				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 10 );
 				camera.position.set( 0, 1.6, 3 );
 
-				const hemLight = new THREE.HemisphereLight( 0x808080, 0x606060 );
-				const light = new THREE.DirectionalLight( 0xffffff );
+				const hemLight = new THREE.HemisphereLight( 0x808080, 0x606060, 3 );
+				const light = new THREE.DirectionalLight( 0xffffff, 3 );
 				scene.add( hemLight, light );
 
 				//
 
-				renderer = new THREE.WebGLRenderer( { antialias: false, alpha: true } );
+				renderer = new THREE.WebGLRenderer( { antialias: false } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setClearAlpha( 1 );
 				renderer.setClearColor( new THREE.Color( 0 ), 0 );
 				renderer.setSize( window.innerWidth, window.innerHeight );
-				renderer.outputEncoding = THREE.sRGBEncoding;
 				renderer.xr.enabled = true;
 
 				document.body.appendChild( renderer.domElement );
@@ -131,8 +139,12 @@
 				] );
 				const line = new THREE.Line( lineGeometry, new THREE.LineBasicMaterial( { color: 0x5555ff } ) );
 
+				// The invisible dummyMesh quads and the guiMesh need to be rendered before the controller lines so that they
+				// leave a hole in the depth buffer that the lines can intersect.
+				line.renderOrder = 1;
+
 				const controllerModelFactory = new XRControllerModelFactory();
-				const handModelFactory = new XRHandModelFactory().setPath( "./models/fbx/" );
+				const handModelFactory = new XRHandModelFactory().setPath( './models/fbx/' );
 
 				//
 
@@ -161,7 +173,7 @@
 				eyeCharts.position.z = snellenConfig.z;
 				scene.add( eyeCharts );
 
-				snellenTexture = new THREE.TextureLoader().load( "textures/snellen.png" );
+				snellenTexture = new THREE.TextureLoader().load( 'textures/snellen.png' );
 				snellenTexture.repeat.x = snellenConfig.cropX;
 				snellenTexture.repeat.y = snellenConfig.cropY;
 				snellenTexture.generateMipmaps = false;
@@ -173,7 +185,7 @@
 				snellenMeshPlain.position.y = snellenConfig.y - snellenConfig.heightMeters;
 				eyeCharts.add( snellenMeshPlain );
 
-				snellenTexture = new THREE.TextureLoader().load( "textures/snellen.png" );
+				snellenTexture = new THREE.TextureLoader().load( 'textures/snellen.png' );
 				snellenTexture.repeat.x = snellenConfig.cropX;
 				snellenTexture.repeat.y = snellenConfig.cropY;
 				const snellenMeshMipMap = new THREE.Mesh(
@@ -189,7 +201,7 @@
 				// projection layer is rendered.
 				const dummyMeshLeft = new THREE.Mesh(
 					new THREE.PlaneGeometry( snellenConfig.widthMeters, snellenConfig.heightMeters ),
-					new THREE.MeshBasicMaterial( { opacity: 0 } ) );
+					new THREE.MeshBasicMaterial( { colorWrite: false } ) );
 				dummyMeshLeft.position.x = snellenConfig.x - snellenConfig.widthMeters;
 				dummyMeshLeft.position.y = snellenConfig.y + snellenConfig.heightMeters;
 				eyeCharts.add( dummyMeshLeft );
@@ -235,14 +247,17 @@
 
 				}
 
-				const group = new InteractiveGroup( renderer, camera );
+				const group = new InteractiveGroup();
+				group.listenToXRControllerEvents( controllers[ 0 ] );
+				group.listenToXRControllerEvents( controllers[ 1 ] );
 				scene.add( group );
 
 				guiMesh = new HTMLMesh( gui.domElement );
 				guiMesh.position.set( 1.0, 1.5, - 1.0 );
 				guiMesh.rotation.y = - Math.PI / 4;
 				guiMesh.scale.setScalar( 2 );
-				guiMesh.material.opacity = 0;
+				guiMesh.material.colorWrite = false;
+				guiMesh.material.transparent = false;
 				group.add( guiMesh );
 
 				// Error message if layer initialization fails.
@@ -321,7 +336,7 @@
 							viewPixelHeight: snellenConfig.textureSizePx,
 							isStatic: true,
 							space: refSpace,
-							layout: "mono",
+							layout: 'mono',
 							transform: new XRRigidTransform( {
 								x: snellenConfig.x - snellenConfig.widthMeters,
 								y: snellenConfig.y + snellenConfig.heightMeters,
@@ -355,7 +370,7 @@
 							video,
 							{
 								space: refSpace,
-								layout: "stereo-left-right",
+								layout: 'stereo-left-right',
 								// Rotate by 45 deg to avoid stereo conflict with the 3D geometry.
 								transform: new XRRigidTransform(
 									{},
@@ -375,7 +390,7 @@
 								session.renderState.layers[ 0 ]
 							]
 						} );
-						
+
 						video.play();
 
 					} );
@@ -390,10 +405,10 @@
 					renderer.state.bindTexture( gl.TEXTURE_2D, glayer.colorTexture );
 					gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, true );
 					gl.texSubImage2D( gl.TEXTURE_2D, 0,
-									( snellenConfig.textureSizePx - snellenConfig.widthPx ) / 2,
-									( snellenConfig.textureSizePx - snellenConfig.heightPx ) / 2,
-									snellenConfig.widthPx, snellenConfig.heightPx,
-									gl.RGBA, gl.UNSIGNED_BYTE, snellenTexture.image );
+						( snellenConfig.textureSizePx - snellenConfig.widthPx ) / 2,
+						( snellenConfig.textureSizePx - snellenConfig.heightPx ) / 2,
+						snellenConfig.widthPx, snellenConfig.heightPx,
+						gl.RGBA, gl.UNSIGNED_BYTE, snellenTexture.image );
 
 				}
 
@@ -404,10 +419,10 @@
 					renderer.state.bindTexture( gl.TEXTURE_2D, glayer.colorTexture );
 					gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, true );
 					gl.texSubImage2D( gl.TEXTURE_2D, 0,
-									( snellenConfig.textureSizePx - snellenConfig.widthPx ) / 2,
-									( snellenConfig.textureSizePx - snellenConfig.heightPx ) / 2,
-									snellenConfig.widthPx, snellenConfig.heightPx,
-									gl.RGBA, gl.UNSIGNED_BYTE, snellenTexture.image );
+						( snellenConfig.textureSizePx - snellenConfig.widthPx ) / 2,
+						( snellenConfig.textureSizePx - snellenConfig.heightPx ) / 2,
+						snellenConfig.widthPx, snellenConfig.heightPx,
+						gl.RGBA, gl.UNSIGNED_BYTE, snellenTexture.image );
 					gl.generateMipmap( gl.TEXTURE_2D );
 
 				}

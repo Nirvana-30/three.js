@@ -10,12 +10,21 @@
 	<body>
 		<div id="info"><a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - effects - ascii</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { AsciiEffect } from './jsm/effects/AsciiEffect.js';
-			import { TrackballControls } from './jsm/controls/TrackballControls.js';
+			import { AsciiEffect } from 'three/addons/effects/AsciiEffect.js';
+			import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
 
 			let camera, controls, scene, renderer, effect;
 
@@ -35,11 +44,11 @@
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color( 0, 0, 0 );
 
-				const pointLight1 = new THREE.PointLight( 0xffffff );
+				const pointLight1 = new THREE.PointLight( 0xffffff, 3, 0, 0 );
 				pointLight1.position.set( 500, 500, 500 );
 				scene.add( pointLight1 );
 
-				const pointLight2 = new THREE.PointLight( 0xffffff, 0.25 );
+				const pointLight2 = new THREE.PointLight( 0xffffff, 1, 0, 0 );
 				pointLight2.position.set( - 500, - 500, - 500 );
 				scene.add( pointLight2 );
 

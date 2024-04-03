@@ -1,12 +1,12 @@
 /* global QUnit */
 
-import { ShapeUtils } from '../../../../src/extras/ShapeUtils';
+// import { ShapeUtils } from '../../../../src/extras/ShapeUtils.js';
 
 export default QUnit.module( 'Extras', () => {
 
 	QUnit.module( 'ShapeUtils', () => {
 
-		// PUBLIC STUFF
+		// STATIC
 		QUnit.todo( 'area', ( assert ) => {
 
 			assert.ok( false, 'everything\'s gonna be alright' );

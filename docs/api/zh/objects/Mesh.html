@@ -44,6 +44,11 @@
 			[page:BufferGeometry] 的实例或者派生类，定义了物体的结构。
 		</p>
 
+		<h3>[property:Boolean isMesh]</h3>
+		<p>
+			Read-only flag to check if a given object is of type [name].
+		</p>
+
 		<h3>[property:Material material]</h3>
 		<p>
 			由[page:Material]基类或者一个包含材质的数组派生而来的材质实例，定义了物体的外观。默认值是一个[page:MeshBasicMaterial]。
@@ -67,6 +72,13 @@
 
 		<h3>[method:Mesh clone]()</h3>
 		<p>返回这个[name]对象及其子级的克隆。</p>
+
+		<h3>
+			[method:Vector3 getVertexPosition]( [param:Integer index], [param:Vector3 target] )
+		</h3>
+		<p>
+			获取给定索引处顶点的局部空间位置，同时考虑变形目标和蒙皮的当前动画状态。
+		</p>
 
 		<h3>[method:undefined raycast]( [param:Raycaster raycaster], [param:Array intersects] )</h3>
 		<p>

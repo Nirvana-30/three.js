@@ -14,11 +14,20 @@
 
 		<div id="container"></div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { ShadowMesh } from './jsm/objects/ShadowMesh.js';
+			import { ShadowMesh } from 'three/addons/objects/ShadowMesh.js';
 
 			let SCREEN_WIDTH = window.innerWidth;
 			let SCREEN_HEIGHT = window.innerHeight;
@@ -26,9 +35,9 @@
 			const scene = new THREE.Scene();
 			const camera = new THREE.PerspectiveCamera( 55, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 3000 );
 			const clock = new THREE.Clock();
-			const renderer = new THREE.WebGLRenderer();
+			const renderer = new THREE.WebGLRenderer( { stencil: true } );
 
-			const sunLight = new THREE.DirectionalLight( 'rgb(255,255,255)', 1 );
+			const sunLight = new THREE.DirectionalLight( 'rgb(255,255,255)', 3 );
 			let useDirectionalLight = true;
 			let arrowHelper1, arrowHelper2, arrowHelper3;
 			const arrowDirection = new THREE.Vector3();
@@ -60,7 +69,7 @@
 
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
-				document.getElementById( "container" ).appendChild( renderer.domElement );
+				document.getElementById( 'container' ).appendChild( renderer.domElement );
 				window.addEventListener( 'resize', onWindowResize );
 
 				camera.position.set( 0, 2.5, 10 );
@@ -246,7 +255,7 @@
 					lightSphere.visible = false;
 					lightHolder.visible = false;
 
-					document.getElementById( 'lightButton' ).value = "Switch to PointLight";
+					document.getElementById( 'lightButton' ).value = 'Switch to PointLight';
 
 				} else {
 
@@ -272,7 +281,7 @@
 					lightSphere.visible = true;
 					lightHolder.visible = true;
 
-					document.getElementById( 'lightButton' ).value = "Switch to THREE.DirectionalLight";
+					document.getElementById( 'lightButton' ).value = 'Switch to THREE.DirectionalLight';
 
 				}
 

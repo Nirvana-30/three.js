@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – の前提条件">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
   </head>
   <body>
     <div class="container">
@@ -32,7 +39,7 @@ ES5、ES6、およびES7を把握してる事を前提とします。
 <p>es6モジュールはスクリプトの中で <code class="notranslate" translate="no">import</code> キーワード、または <code class="notranslate" translate="no">&lt;script type="module"&gt;</code> タグを使用してインラインでロードできます。
 以下に両方の使用​​例があります。</p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;script type="module"&gt;
-import * as THREE from '../../build/three.module.js';
+import * as THREE from 'three';
 
 ...
 
@@ -250,9 +257,9 @@ const v = Vector();     // clearly an error if all functions start with a lowerc
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

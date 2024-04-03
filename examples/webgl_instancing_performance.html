@@ -26,14 +26,23 @@
 
 	<div id="container"></div>
 
+	<script type="importmap">
+		{
+			"imports": {
+				"three": "../build/three.module.js",
+				"three/addons/": "./jsm/"
+			}
+		}
+	</script>
+
 	<script type="module">
-		import * as THREE from '../build/three.module.js';
+		import * as THREE from 'three';
 
-		import Stats from './jsm/libs/stats.module.js';
-		import { GUI } from './jsm/libs/lil-gui.module.min.js';
+		import Stats from 'three/addons/libs/stats.module.js';
+		import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
-		import { OrbitControls } from './jsm/controls/OrbitControls.js';
-		import * as BufferGeometryUtils from './jsm/utils/BufferGeometryUtils.js';
+		import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+		import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
 
 		let container, stats, gui, guiStatsEl;
 		let camera, controls, scene, renderer, material;
@@ -84,7 +93,6 @@
 		const randomizeMatrix = function () {
 
 			const position = new THREE.Vector3();
-			const rotation = new THREE.Euler();
 			const quaternion = new THREE.Quaternion();
 			const scale = new THREE.Vector3();
 
@@ -94,11 +102,7 @@
 				position.y = Math.random() * 40 - 20;
 				position.z = Math.random() * 40 - 20;
 
-				rotation.x = Math.random() * 2 * Math.PI;
-				rotation.y = Math.random() * 2 * Math.PI;
-				rotation.z = Math.random() * 2 * Math.PI;
-
-				quaternion.setFromEuler( rotation );
+				quaternion.random();
 
 				scale.x = scale.y = scale.z = Math.random() * 1;
 
@@ -188,7 +192,7 @@
 
 			}
 
-			const mergedGeometry = BufferGeometryUtils.mergeBufferGeometries( geometries );
+			const mergedGeometry = BufferGeometryUtils.mergeGeometries( geometries );
 
 			scene.add( new THREE.Mesh( mergedGeometry, material ) );
 
@@ -246,8 +250,6 @@
 			renderer = new THREE.WebGLRenderer( { antialias: true } );
 			renderer.setPixelRatio( window.devicePixelRatio );
 			renderer.setSize( width, height );
-			renderer.outputEncoding = THREE.sRGBEncoding;
-
 			container = document.getElementById( 'container' );
 			container.appendChild( renderer.domElement );
 

@@ -7,17 +7,25 @@
 		<link type="text/css" rel="stylesheet" href="main.css">
 	</head>
 	<body>
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
 
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
-			import { OBJLoader } from './jsm/loaders/OBJLoader.js';
-			import { EdgeSplitModifier } from './jsm/modifiers/EdgeSplitModifier.js';
-			import * as BufferGeometryUtils from './jsm/utils/BufferGeometryUtils.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+			import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+			import { EdgeSplitModifier } from 'three/addons/modifiers/EdgeSplitModifier.js';
+			import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
 
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
 			let renderer, scene, camera;
 			let modifier, mesh, baseGeometry;
@@ -60,7 +68,7 @@
 				controls.minZoom = 1;
 				camera.position.set( 0, 0, 4 );
 
-				scene.add( new THREE.HemisphereLight( 0xffffff, 0x444444 ) );
+				scene.add( new THREE.HemisphereLight( 0xffffff, 0x444444, 3 ) );
 
 				new OBJLoader().load(
 					'./models/obj/cerberus/Cerberus.obj',
@@ -96,6 +104,7 @@
 				new THREE.TextureLoader().load( './models/obj/cerberus/Cerberus_A.jpg', function ( texture ) {
 
 					map = texture;
+					map.colorSpace = THREE.SRGBColorSpace;
 
 					if ( mesh !== undefined && params.showMap ) {
 
@@ -107,7 +116,7 @@
 				} );
 
 
-				const gui = new GUI( { name: 'Edge split modifier parameters' } );
+				const gui = new GUI( { title: 'Edge split modifier parameters' } );
 
 				gui.add( params, 'showMap' ).onFinishChange( updateMesh );
 				gui.add( params, 'smoothShading' ).onFinishChange( updateMesh );

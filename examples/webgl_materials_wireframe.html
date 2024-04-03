@@ -47,13 +47,22 @@
 
 		</script>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
 			const API = {
 				thickness: 1
@@ -76,6 +85,7 @@
 				camera.position.z = 200;
 
 				const controls = new OrbitControls( camera, renderer.domElement );
+				controls.addEventListener( 'change', render ); // use if there is no animation loop
 				controls.enablePan = false;
 				controls.enableZoom = false;
 
@@ -111,7 +121,6 @@
 						alphaToCoverage: true // only works when WebGLRenderer's "antialias" is set to "true"
 
 					} );
-					material2.extensions.derivatives = true;
 
 					mesh2 = new THREE.Mesh( geometry, material2 );
 					mesh2.position.set( 40, 0, 0 );
@@ -120,7 +129,7 @@
 
 					//
 
-					animate();
+					render();
 
 				} );
 
@@ -131,6 +140,7 @@
 				gui.add( API, 'thickness', 0, 4 ).onChange( function () {
 
 					mesh2.material.uniforms.thickness.value = API.thickness;
+					render();
 
 				} );
 
@@ -172,9 +182,7 @@
 
 			}
 
-			function animate() {
-
-				requestAnimationFrame( animate );
+			function render() {
 
 				renderer.render( scene, camera );
 

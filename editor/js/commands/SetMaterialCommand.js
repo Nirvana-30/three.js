@@ -1,5 +1,5 @@
 import { Command } from '../Command.js';
-import { ObjectLoader } from '../../../build/three.module.js';
+import { ObjectLoader } from 'three';
 
 /**
  * @param editor Editor
@@ -27,14 +27,16 @@ class SetMaterialCommand extends Command {
 	execute() {
 
 		this.editor.setObjectMaterial( this.object, this.materialSlot, this.newMaterial );
-		this.editor.signals.materialChanged.dispatch( this.newMaterial );
+
+		this.editor.signals.materialChanged.dispatch( this.object, this.materialSlot );
 
 	}
 
 	undo() {
 
 		this.editor.setObjectMaterial( this.object, this.materialSlot, this.oldMaterial );
-		this.editor.signals.materialChanged.dispatch( this.oldMaterial );
+
+		this.editor.signals.materialChanged.dispatch( this.object, this.materialSlot );
 
 	}
 

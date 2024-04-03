@@ -1,7 +1,7 @@
 import {
 	Color,
 	Vector3
-} from '../../../build/three.module.js';
+} from 'three';
 
 /**
  * God-rays (crepuscular rays)
@@ -22,6 +22,8 @@ import {
  */
 
 const GodRaysDepthMaskShader = {
+
+	name: 'GodRaysDepthMaskShader',
 
 	uniforms: {
 
@@ -73,6 +75,8 @@ const GodRaysDepthMaskShader = {
  */
 
 const GodRaysGenerateShader = {
+
+	name: 'GodRaysGenerateShader',
 
 	uniforms: {
 
@@ -194,6 +198,8 @@ const GodRaysGenerateShader = {
 
 const GodRaysCombineShader = {
 
+	name: 'GodRaysCombineShader',
+
 	uniforms: {
 
 		tColors: {
@@ -250,6 +256,8 @@ const GodRaysCombineShader = {
  */
 
 const GodRaysFakeSunShader = {
+
+	name: 'GodRaysFakeSunShader',
 
 	uniforms: {
 

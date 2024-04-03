@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – Цели рендеринга">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
   </head>
   <body>
     <div class="container">
@@ -37,7 +44,7 @@ rtCamera.position.z = 2;
 const rtScene = new THREE.Scene();
 rtScene.background = new THREE.Color('red');
 </pre>
-<p>Обратите внимание, что мы устанавливаем aspect  для aspect  рендеринга, а не для canvas. Правильный aspect  зависит от того, для чего мы выполняем рендеринг. 
+<p>Обратите внимание, что мы устанавливаем aspect  для aspect  рендеринга, а не для canvas. Правильный aspect  зависит от того, для чего мы выполняем рендеринг.
 В этом случае мы будем использовать текстуру цели рендеринга на стороне куба. Поскольку грани куба являются квадратными, мы хотим, чтобы aspect = 1.0. </p>
 <p>Мы заполняем сцену материалом.  В этом случае мы используем свет и 3 куба <a href="responsive.html">из предыдущей статьи</a>.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
@@ -113,7 +120,7 @@ scene.add(cube);
 
 <p></p>
 <p>Куб красный, потому что мы установили <code class="notranslate" translate="no">background</code>  <code class="notranslate" translate="no">rtScene</code> на красный, чтобы текстура цели рендеринга была очищена до красного. </p>
-<p>Цели рендеринга используются для всех видов вещей. <a href="shadows.html">Тени</a> используют цели рендеринга. 
+<p>Цели рендеринга используются для всех видов вещей. <a href="shadows.html">Тени</a> используют цели рендеринга.
 <a href="picking.html">Сбор может использовать цель рендеринга</a>. Различные виды
 <a href="post-processing.html">эффектов постобработки</a> требуют целей рендеринга.
 Для рендеринга зеркала заднего вида в автомобиле или просмотра в реальном времени на мониторе в 3D-сцене может использоваться цель рендеринга. </p>
@@ -146,9 +153,9 @@ scene.add(cube);
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

@@ -4,12 +4,9 @@ var APP = {
 
 		var renderer = new THREE.WebGLRenderer( { antialias: true } );
 		renderer.setPixelRatio( window.devicePixelRatio ); // TODO: Use player.setPixelRatio()
-		renderer.outputEncoding = THREE.sRGBEncoding;
 
 		var loader = new THREE.ObjectLoader();
 		var camera, scene;
-
-		var vrButton = VRButton.createButton( renderer ); // eslint-disable-line no-undef
 
 		var events = {};
 
@@ -17,6 +14,7 @@ var APP = {
 		dom.appendChild( renderer.domElement );
 
 		this.dom = dom;
+		this.canvas = renderer.domElement;
 
 		this.width = 500;
 		this.height = 500;
@@ -25,12 +23,10 @@ var APP = {
 
 			var project = json.project;
 
-			if ( project.vr !== undefined ) renderer.xr.enabled = project.vr;
 			if ( project.shadows !== undefined ) renderer.shadowMap.enabled = project.shadows;
 			if ( project.shadowType !== undefined ) renderer.shadowMap.type = project.shadowType;
 			if ( project.toneMapping !== undefined ) renderer.toneMapping = project.toneMapping;
 			if ( project.toneMappingExposure !== undefined ) renderer.toneMappingExposure = project.toneMappingExposure;
-			if ( project.physicallyCorrectLights !== undefined ) renderer.physicallyCorrectLights = project.physicallyCorrectLights;
 
 			this.setScene( loader.parse( json.scene ) );
 			this.setCamera( loader.parse( json.camera ) );
@@ -133,11 +129,7 @@ var APP = {
 
 			}
 
-			if ( renderer ) {
-
-				renderer.setSize( width, height );
-
-			}
+			renderer.setSize( width, height );
 
 		};
 
@@ -175,8 +167,6 @@ var APP = {
 
 		this.play = function () {
 
-			if ( renderer.xr.enabled ) dom.append( vrButton );
-
 			startTime = prevTime = performance.now();
 
 			document.addEventListener( 'keydown', onKeyDown );
@@ -192,8 +182,6 @@ var APP = {
 		};
 
 		this.stop = function () {
-
-			if ( renderer.xr.enabled ) vrButton.remove();
 
 			document.removeEventListener( 'keydown', onKeyDown );
 			document.removeEventListener( 'keyup', onKeyUp );

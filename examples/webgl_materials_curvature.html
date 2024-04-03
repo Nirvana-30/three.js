@@ -37,18 +37,27 @@
 		varying float vCurvature;
 
 		void main() {
-				gl_FragColor = vec4( vCurvature * 2.0, 0.0, 0.0, 0.0 );
+				gl_FragColor = vec4( vCurvature * 2.0, 0.0, 0.0, 1.0 );
 		}
 
 		</script>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
-			import { OBJLoader } from './jsm/loaders/OBJLoader.js';
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+			import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 
 			let camera, scene, renderer;
 
@@ -126,6 +135,7 @@
 				camera.position.z = 24;
 
 				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				renderer.autoClear = false;
 				document.body.appendChild( renderer.domElement );

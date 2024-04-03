@@ -13,9 +13,18 @@
 			replace parts of an existing texture with all data of another texture
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
 			let camera, scene, renderer, clock, dataTexture, diffuseMap;
 
@@ -36,6 +45,7 @@
 
 				const loader = new THREE.TextureLoader();
 				diffuseMap = loader.load( 'textures/floors/FloorsCheckerboard_S_Diffuse.jpg', animate );
+				diffuseMap.colorSpace = THREE.SRGBColorSpace;
 				diffuseMap.minFilter = THREE.LinearFilter;
 				diffuseMap.generateMipmaps = false;
 

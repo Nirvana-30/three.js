@@ -8,16 +8,25 @@
 	</head>
 	<body>
 		<div id="info">
-			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - THREE.PointLight ShadowMap by <a href="https://github.com/mkkellogg">mkkellogg</a>
+			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - THREE.PointLight ShadowMap by <a href="https://github.com/mkkellogg" target="_blank" rel="noopener">mkkellogg</a>
 		</div>
+
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
 
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import Stats from './jsm/libs/stats.module.js';
+			import Stats from 'three/addons/libs/stats.module.js';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 			let camera, scene, renderer, stats;
 			let pointLight, pointLight2;
@@ -31,13 +40,13 @@
 				camera.position.set( 0, 10, 40 );
 
 				scene = new THREE.Scene();
-				scene.add( new THREE.AmbientLight( 0x111122 ) );
+				scene.add( new THREE.AmbientLight( 0x111122, 3 ) );
 
 				// lights
 
 				function createLight( color ) {
 
-					const intensity = 1.5;
+					const intensity = 200;
 
 					const light = new THREE.PointLight( color, intensity, 20 );
 					light.castShadow = true;
@@ -66,13 +75,6 @@
 					sphere.castShadow = true;
 					sphere.receiveShadow = true;
 					light.add( sphere );
-
-					// custom distance material
-					const distanceMaterial = new THREE.MeshDistanceMaterial( {
-						alphaMap: material.alphaMap,
-						alphaTest: material.alphaTest
-					} );
-					sphere.customDistanceMaterial = distanceMaterial;
 
 					return light;
 

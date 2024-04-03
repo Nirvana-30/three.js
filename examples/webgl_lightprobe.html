@@ -12,14 +12,23 @@
 			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - light probe
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
-			import { LightProbeGenerator } from './jsm/lights/LightProbeGenerator.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+			import { LightProbeGenerator } from 'three/addons/lights/LightProbeGenerator.js';
 
 			let mesh, renderer, scene, camera;
 
@@ -31,7 +40,7 @@
 			// linear color space
 			const API = {
 				lightProbeIntensity: 1.0,
-				directionalLightIntensity: 0.2,
+				directionalLightIntensity: 0.6,
 				envMapIntensity: 1
 			};
 
@@ -48,7 +57,6 @@
 				// tone mapping
 				renderer.toneMapping = THREE.NoToneMapping;
 
-				renderer.outputEncoding = THREE.sRGBEncoding;
 
 				// scene
 				scene = new THREE.Scene();
@@ -87,8 +95,6 @@
 				const urls = genCubeUrls( 'textures/cube/pisa/', '.png' );
 
 				new THREE.CubeTextureLoader().load( urls, function ( cubeTexture ) {
-
-					cubeTexture.encoding = THREE.sRGBEncoding;
 
 					scene.background = cubeTexture;
 

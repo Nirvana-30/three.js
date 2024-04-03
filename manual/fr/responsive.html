@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – Design réactif et ">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
   </head>
   <body>
     <div class="container">
@@ -228,8 +235,8 @@ ratio que vous avez demandé.
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    function resizeRendererToDisplaySize(renderer) {
       const canvas = renderer.domElement;
       const pixelRatio = window.devicePixelRatio;
-      const width  = canvas.clientWidth  * pixelRatio | 0;
-      const height = canvas.clientHeight * pixelRatio | 0;
+      const width  = Math.floor( canvas.clientWidth  * pixelRatio );
+      const height = Math.floor( canvas.clientHeight * pixelRatio );
       const needResize = canvas.width !== width || canvas.height !== height;
       if (needResize) {
         renderer.setSize(width, height, false);
@@ -268,9 +275,9 @@ Dans l'article suivant, nous allons rapidement
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

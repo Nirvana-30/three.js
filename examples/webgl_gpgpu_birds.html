@@ -297,14 +297,23 @@
 
 		</script>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import Stats from './jsm/libs/stats.module.js';
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
+			import Stats from 'three/addons/libs/stats.module.js';
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
-			import { GPUComputationRenderer } from './jsm/misc/GPUComputationRenderer.js';
+			import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js';
 
 			/* TEXTURE WIDTH FOR SIMULATION */
 			const WIDTH = 32;
@@ -383,7 +392,7 @@
 						const y = ~ ~ ( birdIndex / WIDTH ) / WIDTH;
 
 						const c = new THREE.Color(
-							0x444444 +
+							0x666666 +
 							~ ~ ( v / 9 ) / BIRDS * 0x666666
 						);
 
@@ -490,12 +499,6 @@
 
 				gpuCompute = new GPUComputationRenderer( WIDTH, WIDTH, renderer );
 
-				if ( isSafari() ) {
-
-					gpuCompute.setDataType( THREE.HalfFloatType );
-
-				}
-
 				const dtPosition = gpuCompute.createTexture();
 				const dtVelocity = gpuCompute.createTexture();
 				fillPositionTexture( dtPosition );
@@ -534,12 +537,6 @@
 					console.error( error );
 
 				}
-
-			}
-
-			function isSafari() {
-
-				return !! navigator.userAgent.match( /Safari/i ) && ! navigator.userAgent.match( /Chrome/i );
 
 			}
 

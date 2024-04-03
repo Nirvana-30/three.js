@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – のテクスチャ">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
   </head>
   <body>
     <div class="container">
@@ -23,7 +30,7 @@
 最初の記事は<a href="fundamentals.html">Three.jsの基礎知識</a>です。
 まだ読んでない人は、そちらから先に読んでみるといいかもしれません。</p>
 <p>テクスチャはThree.jsの大きなトピックの一つです。
-どのレベルで説明するといいか100%承知してはいませんが、やってみようと思います。 
+どのレベルで説明するといいか100%承知してはいませんが、やってみようと思います。
 Three.jsにはたくさんのトピックがあり、互いに関係しているので、一度に説明するのが難しいのです。
 これがこの記事の内容の早見表です。</p>
 <ul>
@@ -53,10 +60,12 @@ Three.jsにはたくさんのトピックがあり、互いに関係している
 <a href="/docs/#api/ja/loaders/TextureLoader#load"><code class="notranslate" translate="no">load</code></a>を画像のURLを引数にして呼び、<code class="notranslate" translate="no">color</code>を設定する代わりに、
 マテリアルの<code class="notranslate" translate="no">map</code>属性にその結果を渡してください。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loader = new THREE.TextureLoader();
++const texture = loader.load( 'resources/images/wall.jpg' );
++texture.colorSpace = THREE.SRGBColorSpace;
 
 const material = new THREE.MeshBasicMaterial({
 -  color: 0xFF8844,
-+  map: loader.load('resources/images/wall.jpg'),
++  map: texture,
 });
 </pre>
 <p><a href="/docs/#api/ja/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a>を使っているので、光源が必要ないことに注意してください。</p>
@@ -83,20 +92,28 @@ const material = new THREE.MeshBasicMaterial({
 
 <p><a href="/docs/#api/ja/objects/Mesh"><code class="notranslate" translate="no">Mesh</code></a>を作るときに、単に6つのマテリアルを作り、配列として渡します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const loader = new THREE.TextureLoader();
+-const texture = loader.load( 'resources/images/wall.jpg' );
+-texture.colorSpace = THREE.SRGBColorSpace;
 
 -const material = new THREE.MeshBasicMaterial({
--  map: loader.load('resources/images/wall.jpg'),
+-  map: texture,
 -});
 +const materials = [
-+  new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-1.jpg')}),
-+  new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-2.jpg')}),
-+  new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-3.jpg')}),
-+  new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-4.jpg')}),
-+  new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-5.jpg')}),
-+  new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-6.jpg')}),
++  new THREE.MeshBasicMaterial({map: loadColorTexture('resources/images/flower-1.jpg')}),
++  new THREE.MeshBasicMaterial({map: loadColorTexture('resources/images/flower-2.jpg')}),
++  new THREE.MeshBasicMaterial({map: loadColorTexture('resources/images/flower-3.jpg')}),
++  new THREE.MeshBasicMaterial({map: loadColorTexture('resources/images/flower-4.jpg')}),
++  new THREE.MeshBasicMaterial({map: loadColorTexture('resources/images/flower-5.jpg')}),
++  new THREE.MeshBasicMaterial({map: loadColorTexture('resources/images/flower-6.jpg')}),
 +];
 -const cube = new THREE.Mesh(geometry, material);
 +const cube = new THREE.Mesh(geometry, materials);
+
++function loadColorTexture( path ) {
++  const texture = loader.load( path );
++  texture.colorSpace = THREE.SRGBColorSpace;
++  return texture;
++}
 </pre>
 <p>動きました！</p>
 <p></p><div translate="no" class="threejs_example_container notranslate">
@@ -427,7 +444,7 @@ const material = new THREE.MeshBasicMaterial({
 });
 </pre>
 <p>ここでも、簡単なインターフェースを提供するために<a href="https://github.com/georgealways/lil-gui">lil-gui</a>を使います。</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import {GUI} from '/examples/jsm/libs/lil-gui.module.min.js';
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import {GUI} from 'three/addons/libs/lil-gui.module.min.js';
 </pre>
 <p>以前のlil-guiの例でしたように、lil-guiに度数で操作できるオブジェクトを与え、
 ラジアン単位でプロパティを設定する簡単なクラスを使います。</p>
@@ -515,9 +532,9 @@ roughness
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

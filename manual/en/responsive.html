@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – Responsive Design">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
   </head>
   <body>
     <div class="container">
@@ -221,8 +228,8 @@ you passed in. <strong>This is strongly NOT RECOMMENDED</strong>. See below</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    function resizeRendererToDisplaySize(renderer) {
       const canvas = renderer.domElement;
       const pixelRatio = window.devicePixelRatio;
-      const width  = canvas.clientWidth  * pixelRatio | 0;
-      const height = canvas.clientHeight * pixelRatio | 0;
+      const width  = Math.floor( canvas.clientWidth  * pixelRatio );
+      const height = Math.floor( canvas.clientHeight * pixelRatio );
       const needResize = canvas.width !== width || canvas.height !== height;
       if (needResize) {
         renderer.setSize(width, height, false);
@@ -235,7 +242,7 @@ There are many cases when using three.js where we need to know the actual
 size of the canvas's drawingBuffer. For example when making a post processing filter,
 or if we are making a shader that accesses <code class="notranslate" translate="no">gl_FragCoord</code>, if we are making
 a screenshot, or reading pixels for GPU picking, for drawing into a 2D canvas,
-etc... There many many cases where if we use <code class="notranslate" translate="no">setPixelRatio</code> then our actual size will be different
+etc... There are many cases where if we use <code class="notranslate" translate="no">setPixelRatio</code> then our actual size will be different
 than the size we requested and we'll have to guess when to use the size
 we asked for and when to use the size three.js is actually using.
 By doing it ourselves we always know the size being used is the size we requested.
@@ -256,9 +263,9 @@ notice the edges are more crisp.</p>
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

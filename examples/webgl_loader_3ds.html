@@ -12,12 +12,21 @@
 			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - 3DS loader
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { TrackballControls } from './jsm/controls/TrackballControls.js';
-			import { TDSLoader } from './jsm/loaders/TDSLoader.js';
+			import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
+			import { TDSLoader } from 'three/addons/loaders/TDSLoader.js';
 
 			let container, controls;
 			let camera, scene, renderer;
@@ -34,9 +43,9 @@
 				camera.position.z = 2;
 
 				scene = new THREE.Scene();
-				scene.add( new THREE.HemisphereLight() );
+				scene.add( new THREE.AmbientLight( 0xffffff, 3 ) );
 
-				const directionalLight = new THREE.DirectionalLight( 0xffeedd );
+				const directionalLight = new THREE.DirectionalLight( 0xffeedd, 3 );
 				directionalLight.position.set( 0, 0, 2 );
 				scene.add( directionalLight );
 
@@ -62,10 +71,9 @@
 
 				} );
 
-				renderer = new THREE.WebGLRenderer();
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
-				renderer.outputEncoding = THREE.sRGBEncoding;
 				container.appendChild( renderer.domElement );
 
 				controls = new TrackballControls( camera, renderer.domElement );

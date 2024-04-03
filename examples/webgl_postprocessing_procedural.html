@@ -54,12 +54,21 @@
 
 		<div id="container"></div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import Stats from './jsm/libs/stats.module.js';
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
+			import Stats from 'three/addons/libs/stats.module.js';
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
 			let postCamera, postScene, renderer;
 			let postMaterial, noiseRandom1DMaterial, noiseRandom2DMaterial, noiseRandom3DMaterial, postQuad;
@@ -81,7 +90,7 @@
 
 			function init() {
 
-				const container = document.getElementById( "container" );
+				const container = document.getElementById( 'container' );
 
 				renderer = new THREE.WebGLRenderer();
 				renderer.setPixelRatio( window.devicePixelRatio );
@@ -117,13 +126,7 @@
 
 			function onWindowResize() {
 
-				const width = window.innerWidth;
-				const height = window.innerHeight;
-
-				postCamera.aspect = width / height;
-				postCamera.updateProjectionMatrix();
-
-				renderer.setSize( width, height );
+				renderer.setSize( window.innerWidth, window.innerHeight );
 
 			}
 

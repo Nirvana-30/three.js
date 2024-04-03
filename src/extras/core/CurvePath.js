@@ -33,9 +33,12 @@ class CurvePath extends Curve {
 
 		if ( ! startPoint.equals( endPoint ) ) {
 
-			this.curves.push( new Curves[ 'LineCurve' ]( endPoint, startPoint ) );
+			const lineType = ( startPoint.isVector2 === true ) ? 'LineCurve' : 'LineCurve3';
+			this.curves.push( new Curves[ lineType ]( endPoint, startPoint ) );
 
 		}
+
+		return this;
 
 	}
 
@@ -160,9 +163,9 @@ class CurvePath extends Curve {
 		for ( let i = 0, curves = this.curves; i < curves.length; i ++ ) {
 
 			const curve = curves[ i ];
-			const resolution = ( curve && curve.isEllipseCurve ) ? divisions * 2
-				: ( curve && ( curve.isLineCurve || curve.isLineCurve3 ) ) ? 1
-					: ( curve && curve.isSplineCurve ) ? divisions * curve.points.length
+			const resolution = curve.isEllipseCurve ? divisions * 2
+				: ( curve.isLineCurve || curve.isLineCurve3 ) ? 1
+					: curve.isSplineCurve ? divisions * curve.points.length
 						: divisions;
 
 			const pts = curve.getPoints( resolution );

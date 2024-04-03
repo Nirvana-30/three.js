@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>three.js webgl - GLTFloader + sheen</title>
+		<title>three.js webgl - GLTFloader + Sheen</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<link type="text/css" rel="stylesheet" href="main.css">
@@ -18,15 +18,24 @@
 			Sheen Chair from <a href="https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/SheenChair" target="_blank" rel="noopener">glTF-Sample-Models</a>
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
-			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
-			import { RoomEnvironment } from './jsm/environments/RoomEnvironment.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+			import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+			import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
 			let camera, scene, renderer, controls;
 
@@ -65,10 +74,9 @@
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				renderer.toneMapping = THREE.ACESFilmicToneMapping;
 				renderer.toneMappingExposure = 1;
-				renderer.outputEncoding = THREE.sRGBEncoding;
 				container.appendChild( renderer.domElement );
 
-				const environment = new RoomEnvironment();
+				const environment = new RoomEnvironment( renderer );
 				const pmremGenerator = new THREE.PMREMGenerator( renderer );
 
 				scene.background = new THREE.Color( 0xbbbbbb );

@@ -38,11 +38,20 @@
 			<div class="slider"></div>
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 			let container, camera, renderer, controls;
 			let sceneL, sceneR;
@@ -66,7 +75,7 @@
 
 				controls = new OrbitControls( camera, container );
 
-				const light = new THREE.HemisphereLight( 0xffffff, 0x444444, 1 );
+				const light = new THREE.HemisphereLight( 0xffffff, 0x444444, 3 );
 				light.position.set( - 2, 2, 2 );
 				sceneL.add( light.clone() );
 				sceneR.add( light.clone() );
@@ -127,7 +136,7 @@
 
 					sliderPos = Math.max( 0, Math.min( window.innerWidth, e.pageX ) );
 
-					slider.style.left = sliderPos - ( slider.offsetWidth / 2 ) + "px";
+					slider.style.left = sliderPos - ( slider.offsetWidth / 2 ) + 'px';
 
 				}
 

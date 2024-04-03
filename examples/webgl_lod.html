@@ -12,11 +12,20 @@
 			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - level of detail
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { FlyControls } from './jsm/controls/FlyControls.js';
+			import { FlyControls } from 'three/addons/controls/FlyControls.js';
 
 			let container;
 
@@ -38,11 +47,11 @@
 				scene = new THREE.Scene();
 				scene.fog = new THREE.Fog( 0x000000, 1, 15000 );
 
-				const pointLight = new THREE.PointLight( 0xff2200 );
+				const pointLight = new THREE.PointLight( 0xff2200, 3, 0, 0 );
 				pointLight.position.set( 0, 0, 0 );
 				scene.add( pointLight );
 
-				const dirLight = new THREE.DirectionalLight( 0xffffff );
+				const dirLight = new THREE.DirectionalLight( 0xffffff, 3 );
 				dirLight.position.set( 0, 0, 1 ).normalize();
 				scene.add( dirLight );
 

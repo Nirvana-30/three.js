@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – Cleanup">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
   </head>
   <body>
     <div class="container">
@@ -36,7 +43,7 @@ to manage them. This is an issue of how WebGL is designed
 and so three.js has no recourse but to pass on the
 responsibility to free resources back to you.</p>
 <p>You free three.js resource this by calling the <code class="notranslate" translate="no">dispose</code> function on
-<a href="textures.html">textures</a>, 
+<a href="textures.html">textures</a>,
 <a href="primitives.html">geometries</a>, and
 <a href="materials.html">materials</a>.</p>
 <p>You could do this manually. At the start you might create
@@ -401,7 +408,7 @@ loadFiles();
 <p>If we wanted to load 2 or more files at once and free them at
 anytime we would use one <code class="notranslate" translate="no">ResourceTracker</code> per file.</p>
 <p>Above we are only tracking <code class="notranslate" translate="no">gltf.scene</code> right after loading.
-Based on our current implementation of <code class="notranslate" translate="no">ResourceTracker</code> that 
+Based on our current implementation of <code class="notranslate" translate="no">ResourceTracker</code> that
 will track all the resources just loaded. If we added more
 things to the scene we need to decide whether or not to track them.</p>
 <p>For example let's say after we loaded a character we put a tool
@@ -427,9 +434,9 @@ required to free resources in three.js</p>
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

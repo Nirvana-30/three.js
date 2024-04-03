@@ -46,11 +46,20 @@
 			<div id="ui"><a href="#" id="hideLines">CULL SOME LINES</a> - <a href="#" id="showAllLines">SHOW ALL LINES</a></div>
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import Stats from './jsm/libs/stats.module.js';
+			import Stats from 'three/addons/libs/stats.module.js';
 
 			let camera, scene, renderer, stats;
 			let geometry, mesh;
@@ -72,8 +81,6 @@
 
 				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.01, 10 );
 				camera.position.z = 3.5;
-
-				scene.add( new THREE.AmbientLight( 0x444444 ) );
 
 				stats = new Stats();
 				document.body.appendChild( stats.dom );
@@ -155,7 +162,7 @@
 			function updateCount() {
 
 				const str = '1 draw call, ' + numLat * numLng + ' lines, ' + numLinesCulled + ' culled (<a target="_blank" href="http://callum.com">author</a>)';
-				document.getElementById( 'title' ).innerHTML = str.replace( /\B(?=(\d{3})+(?!\d))/g, "," );
+				document.getElementById( 'title' ).innerHTML = str.replace( /\B(?=(\d{3})+(?!\d))/g, ',' );
 
 			}
 

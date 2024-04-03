@@ -15,12 +15,21 @@
 
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
-			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+			import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 			let renderer, scene, camera;
 
@@ -29,11 +38,10 @@
 			function init() {
 
 				// renderer
-				renderer = new THREE.WebGLRenderer();
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				document.body.appendChild( renderer.domElement );
 
-				renderer.outputEncoding = THREE.sRGBEncoding;
 
 				// scene
 				scene = new THREE.Scene();
@@ -51,10 +59,10 @@
 				controls.enablePan = false;
 
 				// ambient
-				scene.add( new THREE.AmbientLight( 0xffffff, .2 ) );
+				scene.add( new THREE.AmbientLight( 0xffffff, 0.6 ) );
 
 				// light
-				const light = new THREE.PointLight( 0xffffff, 1.5 );
+				const light = new THREE.PointLight( 0xffffff, 4.5, 0, 0 );
 				camera.add( light );
 
 				// model

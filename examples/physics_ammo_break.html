@@ -15,16 +15,25 @@
 	<div id="info">Physics threejs demo with convex objects breaking in real time<br />Press mouse to throw balls and move the camera.</div>
 	<div id="container"></div>
 
-	<script src="js/libs/ammo.wasm.js"></script>
+	<script src="jsm/libs/ammo.wasm.js"></script>
+
+	<script type="importmap">
+		{
+			"imports": {
+				"three": "../build/three.module.js",
+				"three/addons/": "./jsm/"
+			}
+		}
+	</script>
 
 	<script type="module">
-		import * as THREE from '../build/three.module.js';
+		import * as THREE from 'three';
 
-		import Stats from './jsm/libs/stats.module.js';
+		import Stats from 'three/addons/libs/stats.module.js';
 
-		import { OrbitControls } from './jsm/controls/OrbitControls.js';
-		import { ConvexObjectBreaker } from './jsm/misc/ConvexObjectBreaker.js';
-		import { ConvexGeometry } from './jsm/geometries/ConvexGeometry.js';
+		import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+		import { ConvexObjectBreaker } from 'three/addons/misc/ConvexObjectBreaker.js';
+		import { ConvexGeometry } from 'three/addons/geometries/ConvexGeometry.js';
 
 		// - Global variables -
 
@@ -107,7 +116,7 @@
 
 			camera.position.set( - 14, 8, 16 );
 
-			renderer = new THREE.WebGLRenderer();
+			renderer = new THREE.WebGLRenderer( { antialias: true } );
 			renderer.setPixelRatio( window.devicePixelRatio );
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			renderer.shadowMap.enabled = true;
@@ -119,10 +128,10 @@
 
 			textureLoader = new THREE.TextureLoader();
 
-			const ambientLight = new THREE.AmbientLight( 0x707070 );
+			const ambientLight = new THREE.AmbientLight( 0xbbbbbb );
 			scene.add( ambientLight );
 
-			const light = new THREE.DirectionalLight( 0xffffff, 1 );
+			const light = new THREE.DirectionalLight( 0xffffff, 3 );
 			light.position.set( - 10, 18, 5 );
 			light.castShadow = true;
 			const d = 14;
@@ -183,7 +192,7 @@
 			quat.set( 0, 0, 0, 1 );
 			const ground = createParalellepipedWithPhysics( 40, 1, 40, 0, pos, quat, new THREE.MeshPhongMaterial( { color: 0xFFFFFF } ) );
 			ground.receiveShadow = true;
-			textureLoader.load( "textures/grid.png", function ( texture ) {
+			textureLoader.load( 'textures/grid.png', function ( texture ) {
 
 				texture.wrapS = THREE.RepeatWrapping;
 				texture.wrapT = THREE.RepeatWrapping;

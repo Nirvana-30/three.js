@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – のカメラ">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
   </head>
   <body>
     <div class="container">
@@ -309,8 +316,9 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 
 <p>1つ目の解決策はどのピクセルが前後にあるかを計算するために、three.jsの別メソッドを使用します。
 これは <a href="/docs/#api/ja/renderers/WebGLRenderer"><code class="notranslate" translate="no">WebGLRenderer</code></a> の作成時に <code class="notranslate" translate="no">logarithmicDepthBuffer</code> を有効にします。</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-const renderer = new THREE.WebGLRenderer({canvas});
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
 +const renderer = new THREE.WebGLRenderer({
++  antialias: true,
 +  canvas,
 +  logarithmicDepthBuffer: true,
 +});
@@ -507,9 +515,9 @@ const planes = textures.map((texture) =&gt; {
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

@@ -1,6 +1,6 @@
 import {
 	Vector2
-} from '../../../build/three.module.js';
+} from 'three';
 
 /**
  * Triangle blur shader
@@ -13,6 +13,8 @@ import {
  */
 
 const TriangleBlurShader = {
+
+	name: 'TriangleBlurShader',
 
 	uniforms: {
 

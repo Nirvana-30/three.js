@@ -12,12 +12,21 @@
 			<a href="https://developers.google.com/kml/documentation/kmzarchives" target="_blank" rel="noopener">KMZLoader</a>
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
-			import { KMZLoader } from './jsm/loaders/KMZLoader.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+			import { KMZLoader } from 'three/addons/loaders/KMZLoader.js';
 
 			let camera, scene, renderer;
 
@@ -28,7 +37,7 @@
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color( 0x999999 );
 
-				const light = new THREE.DirectionalLight( 0xffffff );
+				const light = new THREE.DirectionalLight( 0xffffff, 3 );
 				light.position.set( 0.5, 1.0, 0.5 ).normalize();
 
 				scene.add( light );
@@ -40,7 +49,7 @@
 
 				scene.add( camera );
 
-				const grid = new THREE.GridHelper( 50, 50, 0xffffff, 0x555555 );
+				const grid = new THREE.GridHelper( 50, 50, 0xffffff, 0x7b7b7b );
 				scene.add( grid );
 
 				renderer = new THREE.WebGLRenderer( { antialias: true } );

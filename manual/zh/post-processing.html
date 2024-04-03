@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – 后期处理">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
     <link rel="stylesheet" href="/manual/zh/lang.css">
   </head>
   <body>
@@ -56,20 +63,17 @@ composer.addPass(bloomPass);
 </pre>
 <p>最后,我们用<code class="notranslate" translate="no">FilmPass</code>来添加噪点和扫描线。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const filmPass = new FilmPass(
-    0.35,   // noise intensity
-    0.025,  // scanline intensity
-    648,    // scanline count
+    0.5,   // intensity
     false,  // grayscale
 );
-filmPass.renderToScreen = true;
 composer.addPass(filmPass);
 </pre>
-<p>由于filmPass是最后一次传递，我们将其renderToScreen属性设置为true来告诉它渲染到画布。如果不设置它，它将渲染到下一个渲染目标。</p>
 <p>为了使用这些类,我们需要导入一些js模块</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import {EffectComposer} from '/examples/jsm/postprocessing/EffectComposer.js';
-import {RenderPass} from '/examples/jsm/postprocessing/RenderPass.js';
-import {BloomPass} from '/examples/jsm/postprocessing/BloomPass.js';
-import {FilmPass} from '/examples/jsm/postprocessing/FilmPass.js';
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
+import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
+import {BloomPass} from 'three/addons/postprocessing/BloomPass.js';
+import {FilmPass} from 'three/addons/postprocessing/FilmPass.js';
+import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 </pre>
 <p>对于几乎所有的后期处理EffectComposer.js，RenderPass.js 都是必需的。</p>
 <p>们需要做的最后一件事是使用EffectComposer.render 替代 WebGLRenderer.render 并告诉EffectComposer来匹配画布的大小</p>
@@ -117,14 +121,12 @@ import {FilmPass} from '/examples/jsm/postprocessing/FilmPass.js';
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">bloomPass.copyUniforms.opacity.value = someValue;
 </pre>
 <p>类似地，在<code class="notranslate" translate="no">FilmPass.js</code>中我发现这些代码</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">if ( grayscale !== undefined )    this.uniforms.grayscale.value = grayscale;
-if ( noiseIntensity !== undefined ) this.uniforms.nIntensity.value = noiseIntensity;
-if ( scanlinesIntensity !== undefined ) this.uniforms.sIntensity.value = scanlinesIntensity;
-if ( scanlinesCount !== undefined ) this.uniforms.sCount.value = scanlinesCount;
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">this.uniforms.intensity.value = intensity;
+this.uniforms.grayscale.value = grayscale;
 </pre>
 <p>这样就很清楚如何设置它们。</p>
 <p>让我们快速创建一个GUI来设置这些值</p>
-<pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">import {GUI} from '/examples/jsm/libs/lil-gui.module.min.js';
+<pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">import {GUI} from 'three/addons/libs/lil-gui.module.min.js';
 </pre>
 <p>和</p>
 <pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">const gui = new GUI();
@@ -136,16 +138,14 @@ if ( scanlinesCount !== undefined ) this.uniforms.sCount.value = scanlinesCount;
 {
   const folder = gui.addFolder('FilmPass');
   folder.add(filmPass.uniforms.grayscale, 'value').name('grayscale');
-  folder.add(filmPass.uniforms.nIntensity, 'value', 0, 1).name('noise intensity');
-  folder.add(filmPass.uniforms.sIntensity, 'value', 0, 1).name('scanline intensity');
-  folder.add(filmPass.uniforms.sCount, 'value', 0, 1000).name('scanline count');
+  folder.add(filmPass.uniforms.intensity, 'value', 0, 1).name('intensity');
   folder.open();
 }
 </pre>
 <p>现在我们可以调整这些设置</p>
 <p></p><div translate="no" class="threejs_example_container notranslate">
-  <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/threejs-postprocessing-gui.html"></iframe></div>
-  <a class="threejs_center" href="/manual/examples/threejs-postprocessing-gui.html" target="_blank">点击此处在新标签页中打开</a>
+  <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/postprocessing-gui.html"></iframe></div>
+  <a class="threejs_center" href="/manual/examples/postprocessing-gui.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
 
 <p></p>
@@ -197,20 +197,20 @@ gui.add(colorPass.uniforms.color.value, 'b', 0, 4).name('blue');
 </pre>
 <p>上述代码帮我们做了一个简单的后处理效果,乘以一种颜色</p>
 <p></p><div translate="no" class="threejs_example_container notranslate">
-  <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/threejs-postprocessing-custom.html"></iframe></div>
-  <a class="threejs_center" href="/manual/examples/threejs-postprocessing-custom.html" target="_blank">点击此处在新标签页中打开</a>
+  <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/postprocessing-custom.html"></iframe></div>
+  <a class="threejs_center" href="/manual/examples/postprocessing-custom.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
 
 <p></p>
-<p>如前所述，对于这些文章来说，要讲述如何编写GLSL和自定义着色器的所有细节太多了。如果您真的想知道WebGL本身是如何工作的，请查看<a href="https://webglfundamentals.org">这些文章</a>。另一个很棒的资源是<a href="https://github.com/mrdoob/three.js/tree/master/examples/js/shaders">read through the existing post processing shaders in the THREE.js repo</a>。有些是较为复杂的，但是如果你从简单开始，你会大概率能够了解它们是如何工作的。</p>
-<p>不幸的是，THREE.js存储库中的大多数后期处理效果都没有记录在案，因此要使用它们，你必须通读<a href="https://github.com/mrdoob/three.js/tree/master/examples">示例</a>或者<a href="https://github.com/mrdoob/three.js/tree/master/examples/js/postprocessing">源码</a>。希望这些简单的示例以及有关<a href="notion://www.notion.so/threejs-rendertargets.html">render targets</a>的文章 提供足够的上下文来帮助你开始</p>
+<p>如前所述，对于这些文章来说，要讲述如何编写GLSL和自定义着色器的所有细节太多了。如果您真的想知道WebGL本身是如何工作的，请查看<a href="https://webglfundamentals.org">这些文章</a>。另一个很棒的资源是<a href="https://github.com/mrdoob/three.js/tree/master/examples/jsm/shaders">read through the existing post processing shaders in the THREE.js repo</a>。有些是较为复杂的，但是如果你从简单开始，你会大概率能够了解它们是如何工作的。</p>
+<p>不幸的是，THREE.js存储库中的大多数后期处理效果都没有记录在案，因此要使用它们，你必须通读<a href="https://github.com/mrdoob/three.js/tree/master/examples">示例</a>或者<a href="https://github.com/mrdoob/three.js/tree/master/examples/jsm/postprocessing">源码</a>。希望这些简单的示例以及有关<a href="notion://www.notion.so/threejs-rendertargets.html">render targets</a>的文章 提供足够的上下文来帮助你开始</p>
 
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

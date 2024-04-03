@@ -1,17 +1,12 @@
 /* global QUnit */
 
-import { AnimationUtils } from '../../../../src/animation/AnimationUtils';
+// import * as AnimationUtils from '../../../../src/animation/AnimationUtils.js';
 
 export default QUnit.module( 'Animation', () => {
 
 	QUnit.module( 'AnimationUtils', () => {
 
-		// PUBLIC STUFF
-		QUnit.todo( 'arraySlice', ( assert ) => {
-
-			assert.ok( false, 'everything\'s gonna be alright' );
-
-		} );
+		// PUBLIC
 
 		QUnit.todo( 'convertArray', ( assert ) => {
 
@@ -43,7 +38,18 @@ export default QUnit.module( 'Animation', () => {
 
 		} );
 
+		QUnit.todo( 'subclip', ( assert ) => {
+
+			assert.ok( false, 'everything\'s gonna be alright' );
+
+		} );
+
+		QUnit.todo( 'makeClipAdditive', ( assert ) => {
+
+			assert.ok( false, 'everything\'s gonna be alright' );
+
+		} );
+
 	} );
 
 } );
-

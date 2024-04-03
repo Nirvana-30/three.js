@@ -6,11 +6,18 @@
     <meta name="twitter:site" content="@threejs">
     <meta name="twitter:title" content="Three.js – Настройка окружения ">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
   </head>
   <body>
     <div class="container">
@@ -19,30 +26,30 @@
       </div>
       <div class="lesson">
         <div class="lesson-main">
-          <p>Эта статья является частью серии статей о three.js. 
+          <p>Эта статья является частью серии статей о three.js.
 Первая статья - <a href="fundamentals.html">основы Three.js</a>.
 Если вы её еще не читали, советую вам сделать это.</p>
-<p>Прежде чем мы пойдем дальше, нам нужно поговорить о настройке вашего компьютера для разработки. 
-В частности, по соображениям безопасности WebGL не может напрямую использовать изображения с 
-вашего жесткого диска. Это означает, что для разработки вам необходимо использовать веб-сервер. 
+<p>Прежде чем мы пойдем дальше, нам нужно поговорить о настройке вашего компьютера для разработки.
+В частности, по соображениям безопасности WebGL не может напрямую использовать изображения с
+вашего жесткого диска. Это означает, что для разработки вам необходимо использовать веб-сервер.
 К счастью, веб-серверы разработки очень просты в настройке и использовании.</p>
 <p>Прежде всего, если вы хотите, вы можете скачать весь этот сайт по <a href="https://github.com/gfxfundamentals/threejsfundamentals/archive/gh-pages.zip">этой ссылке</a>.
 После загрузки дважды щелкните по zip-файлу, чтобы распаковать файлы.</p>
 <p>Затем загрузите один из этих простых веб-серверов или воспользуйтесь средствами вашего ide</p>
-<p>Если вы предпочитаете веб-сервер с пользовательским интерфейсом, есть 
+<p>Если вы предпочитаете веб-сервер с пользовательским интерфейсом, есть
 <a href="https://greggman.github.io/servez">Servez</a></p>
 <p></p><div class="threejs_image border">
   <img class="" src="../resources/servez.gif">
 </div>
 
 <p></p>
-<p>Просто укажите на папку, в которую вы распаковали файлы, нажмите "Start", затем 
-перейдите в браузере на <a href="http://localhost:8080/"><code class="notranslate" translate="no">http://localhost:8080/</code></a> или, если 
+<p>Просто укажите на папку, в которую вы распаковали файлы, нажмите "Start", затем
+перейдите в браузере на <a href="http://localhost:8080/"><code class="notranslate" translate="no">http://localhost:8080/</code></a> или, если
 вы хотите просмотреть примеры, перейдите в <a href="http://localhost:8080/threejs"><code class="notranslate" translate="no">http://localhost:8080/threejs</code></a>.</p>
 <p>Чтобы остановить сервер нажмите stop или выйдите из Servez.</p>
-<p>Если вы предпочитаете командную строку (как я), еще один способ заключается 
+<p>Если вы предпочитаете командную строку (как я), еще один способ заключается
 в использовании <a href="https://nodejs.org">node.js</a>.
-Загрузите его, установите его, затем откройте окно командной строки / консоли / терминала. 
+Загрузите его, установите его, затем откройте окно командной строки / консоли / терминала.
 Если вы работаете в Windows, установщик добавит специальную "Node Command Prompt", используйте ее.</p>
 <p>Затем установите <a href="https://github.com/greggman/servez-cli"><code class="notranslate" translate="no">servez</code></a> набрав в консоли</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">npm -g install servez
@@ -65,9 +72,9 @@
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

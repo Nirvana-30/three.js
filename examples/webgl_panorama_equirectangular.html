@@ -14,9 +14,18 @@
 			drag equirectangular texture into the page.
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
 			let camera, scene, renderer;
 
@@ -42,6 +51,7 @@
 				geometry.scale( - 1, 1, 1 );
 
 				const texture = new THREE.TextureLoader().load( 'textures/2294472375_24a3b8ef46_o.jpg' );
+				texture.colorSpace = THREE.SRGBColorSpace;
 				const material = new THREE.MeshBasicMaterial( { map: texture } );
 
 				const mesh = new THREE.Mesh( geometry, material );

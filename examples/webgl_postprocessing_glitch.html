@@ -20,13 +20,23 @@
 			<label for="dotScreen">Glitch me wild:</label><input id="wildGlitch" type="checkbox"/><br />
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
-			import { RenderPass } from './jsm/postprocessing/RenderPass.js';
-			import { GlitchPass } from './jsm/postprocessing/GlitchPass.js';
+			import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+			import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+			import { GlitchPass } from 'three/addons/postprocessing/GlitchPass.js';
+			import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
 			let camera, scene, renderer, composer;
 			let object, light;
@@ -84,9 +94,9 @@
 
 				}
 
-				scene.add( new THREE.AmbientLight( 0x222222 ) );
+				scene.add( new THREE.AmbientLight( 0xcccccc ) );
 
-				light = new THREE.DirectionalLight( 0xffffff );
+				light = new THREE.DirectionalLight( 0xffffff, 3 );
 				light.position.set( 1, 1, 1 );
 				scene.add( light );
 
@@ -97,6 +107,9 @@
 
 				glitchPass = new GlitchPass();
 				composer.addPass( glitchPass );
+
+				const outputPass = new OutputPass();
+				composer.addPass( outputPass );
 
 
 				//

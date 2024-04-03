@@ -12,8 +12,19 @@
 		<h1>[name]</h1>
 
 		<p class="desc">
-		This class can be used to provide a drag'n'drop interaction.
+			This class can be used to provide a drag'n'drop interaction.
 		</p>
+
+		<h2>Import</h2>
+
+		<p>
+			[name] is an add-on, and must be imported explicitly.
+			See [link:#manual/introduction/Installation Installation / Addons].
+		</p>
+
+		<code>
+			import { DragControls } from 'three/addons/controls/DragControls.js';
+		</code>
 
 		<h2>Code Example</h2>
 
@@ -42,7 +53,6 @@
 		<h2>Constructor</h2>
 
 		<h3>[name]( [param:Array objects], [param:Camera camera], [param:HTMLDOMElement domElement] )</h3>
-		<p>
 			<p>
 				[page:Array objects]: An array of draggable 3D objects.
 			</p>
@@ -55,7 +65,6 @@
 			<p>
 				Creates a new instance of [name].
 			</p>
-		</p>
 
 		<h2>Events</h2>
 
@@ -91,10 +100,25 @@
 			Whether or not the controls are enabled.
 		</p>
 
+		<h3>[property:Boolean recursive]</h3>
+		<p>
+			Whether children of draggable objects can be dragged independently from their parent. Default is `true`.
+		</p>
+
 		<h3>[property:Boolean transformGroup]</h3>
 		<p>
 			This option only works if the [page:DragControls.objects] array contains a single draggable group object.
-			If set to *true*, [name] does not transform individual objects but the entire group. Default is *false*.
+			If set to `true`, [name] does not transform individual objects but the entire group. Default is `false`.
+		</p>
+
+		<h3>[property:String mode]</h3>
+		<p>
+			The current transformation mode. Possible values are `translate`, and `rotate`. Default is `translate`.
+		</p>
+
+		<h3>[property:Float rotateSpeed]</h3>
+		<p>
+			The speed at which the object will rotate when dragged in `rotate` mode. The higher the number the faster the rotation. Default is `1`.
 		</p>
 
 		<h2>Methods</h2>
@@ -124,6 +148,11 @@
 		<h3>[method:Raycaster getRaycaster] ()</h3>
 		<p>
 			Returns the internal [page:Raycaster] instance that is used for intersection tests.
+		</p>
+
+		<h3>[method:undefined setObjects] ( [param:Array objects] )</h3>
+		<p>
+			Sets an array of draggable objects by overwriting the existing one.
 		</p>
 
 		<h2>Source</h2>

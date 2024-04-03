@@ -24,14 +24,23 @@
 
 		<div id="container"></div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
-			import { Lut } from './jsm/math/Lut.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+			import { Lut } from 'three/addons/math/Lut.js';
 
 			let container;
 
@@ -68,6 +77,7 @@
 				sprite = new THREE.Sprite( new THREE.SpriteMaterial( {
 					map: new THREE.CanvasTexture( lut.createCanvas() )
 				} ) );
+				sprite.material.map.colorSpace = THREE.SRGBColorSpace;
 				sprite.scale.x = 0.125;
 				uiScene.add( sprite );
 
@@ -83,7 +93,7 @@
 				};
 				loadModel( );
 
-				const pointLight = new THREE.PointLight( 0xffffff, 1 );
+				const pointLight = new THREE.PointLight( 0xffffff, 3, 0, 0 );
 				perpCamera.add( pointLight );
 
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -167,22 +177,15 @@
 				const geometry = mesh.geometry;
 				const pressures = geometry.attributes.pressure;
 				const colors = geometry.attributes.color;
+				const color = new THREE.Color();
 
 				for ( let i = 0; i < pressures.array.length; i ++ ) {
 
 					const colorValue = pressures.array[ i ];
 
-					const color = lut.getColor( colorValue );
+					color.copy( lut.getColor( colorValue ) ).convertSRGBToLinear();
 
-					if ( color === undefined ) {
-
-						console.log( 'Unable to determine color for value:', colorValue );
-
-					} else {
-
-						colors.setXYZ( i, color.r, color.g, color.b );
-
-					}
+					colors.setXYZ( i, color.r, color.g, color.b );
 
 				}
 

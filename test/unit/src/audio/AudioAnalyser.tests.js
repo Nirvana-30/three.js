@@ -1,6 +1,6 @@
 /* global QUnit */
 
-import { AudioAnalyser } from '../../../../src/audio/AudioAnalyser.js';
+// import { AudioAnalyser } from '../../../../src/audio/AudioAnalyser.js';
 
 export default QUnit.module( 'Audios', () => {
 
@@ -13,7 +13,20 @@ export default QUnit.module( 'Audios', () => {
 
 		} );
 
-		// PUBLIC STUFF
+		// PROPERTIES
+		QUnit.todo( 'analyser', ( assert ) => {
+
+			assert.ok( false, 'everything\'s gonna be alright' );
+
+		} );
+
+		QUnit.todo( 'data', ( assert ) => {
+
+			assert.ok( false, 'everything\'s gonna be alright' );
+
+		} );
+
+		// PUBLIC
 		QUnit.todo( 'getFrequencyData', ( assert ) => {
 
 			assert.ok( false, 'everything\'s gonna be alright' );

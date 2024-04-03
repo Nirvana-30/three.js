@@ -11,14 +11,23 @@
 		<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - ShadowMapViewer example by <a href="https://github.com/arya-s">arya-s</a>
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import Stats from './jsm/libs/stats.module.js';
+			import Stats from 'three/addons/libs/stats.module.js';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
-			import { ShadowMapViewer } from './jsm/utils/ShadowMapViewer.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+			import { ShadowMapViewer } from 'three/addons/utils/ShadowMapViewer.js';
 
 			let camera, scene, renderer, clock, stats;
 			let dirLight, spotLight;
@@ -49,9 +58,9 @@
 
 				// Lights
 
-				scene.add( new THREE.AmbientLight( 0x404040 ) );
+				scene.add( new THREE.AmbientLight( 0x404040, 3 ) );
 
-				spotLight = new THREE.SpotLight( 0xffffff );
+				spotLight = new THREE.SpotLight( 0xffffff, 500 );
 				spotLight.name = 'Spot Light';
 				spotLight.angle = Math.PI / 5;
 				spotLight.penumbra = 0.3;
@@ -65,7 +74,7 @@
 
 				scene.add( new THREE.CameraHelper( spotLight.shadow.camera ) );
 
-				dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
+				dirLight = new THREE.DirectionalLight( 0xffffff, 3 );
 				dirLight.name = 'Dir. Light';
 				dirLight.position.set( 0, 10, 0 );
 				dirLight.castShadow = true;

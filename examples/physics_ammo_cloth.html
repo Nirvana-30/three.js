@@ -14,15 +14,24 @@
 		<div id="info">Ammo.js physics soft body cloth demo<br>Press Q or A to move the arm.</div>
 		<div id="container"></div>
 
-		<script src="js/libs/ammo.wasm.js"></script>
+		<script src="jsm/libs/ammo.wasm.js"></script>
+
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
 
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import Stats from './jsm/libs/stats.module.js';
+			import Stats from 'three/addons/libs/stats.module.js';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 			// Graphics variables
 			let container, stats;
@@ -74,7 +83,7 @@
 
 				camera.position.set( - 12, 7, 4 );
 
-				renderer = new THREE.WebGLRenderer();
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				renderer.shadowMap.enabled = true;
@@ -86,10 +95,10 @@
 
 				textureLoader = new THREE.TextureLoader();
 
-				const ambientLight = new THREE.AmbientLight( 0x404040 );
+				const ambientLight = new THREE.AmbientLight( 0xbbbbbb );
 				scene.add( ambientLight );
 
-				const light = new THREE.DirectionalLight( 0xffffff, 1 );
+				const light = new THREE.DirectionalLight( 0xffffff, 3 );
 				light.position.set( - 7, 10, 15 );
 				light.castShadow = true;
 				const d = 10;
@@ -144,8 +153,9 @@
 				const ground = createParalellepiped( 40, 1, 40, 0, pos, quat, new THREE.MeshPhongMaterial( { color: 0xFFFFFF } ) );
 				ground.castShadow = true;
 				ground.receiveShadow = true;
-				textureLoader.load( "textures/grid.png", function ( texture ) {
+				textureLoader.load( 'textures/grid.png', function ( texture ) {
 
+					texture.colorSpace = THREE.SRGBColorSpace;
 					texture.wrapS = THREE.RepeatWrapping;
 					texture.wrapT = THREE.RepeatWrapping;
 					texture.repeat.set( 40, 40 );
@@ -205,6 +215,7 @@
 						}
 
 					}
+
 					pos.y += brickHeight;
 
 				}
@@ -226,8 +237,9 @@
 				cloth.castShadow = true;
 				cloth.receiveShadow = true;
 				scene.add( cloth );
-				textureLoader.load( "textures/grid.png", function ( texture ) {
+				textureLoader.load( 'textures/grid.png', function ( texture ) {
 
+					texture.colorSpace = THREE.SRGBColorSpace;
 					texture.wrapS = THREE.RepeatWrapping;
 					texture.wrapT = THREE.RepeatWrapping;
 					texture.repeat.set( clothNumSegmentsZ, clothNumSegmentsY );

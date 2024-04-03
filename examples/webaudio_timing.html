@@ -17,10 +17,19 @@
 		sound effect by <a href="https://freesound.org/people/michorvath/sounds/269718/" target="_blank" rel="noopener noreferrer">michorvath</a>
 	</div>
 
-	<script type="module">
-		import * as THREE from '../build/three.module.js';
+	<script type="importmap">
+		{
+			"imports": {
+				"three": "../build/three.module.js",
+				"three/addons/": "./jsm/"
+			}
+		}
+	</script>
 
-		import { OrbitControls } from './jsm/controls/OrbitControls.js';
+	<script type="module">
+		import * as THREE from 'three';
+
+		import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 		let scene, camera, renderer, clock;
 
@@ -51,10 +60,10 @@
 
 			// lights
 
-			const ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
+			const ambientLight = new THREE.AmbientLight( 0xcccccc );
 			scene.add( ambientLight );
 
-			const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.7 );
+			const directionalLight = new THREE.DirectionalLight( 0xffffff, 2.5 );
 			directionalLight.position.set( 0, 5, 5 );
 			scene.add( directionalLight );
 
@@ -128,10 +137,9 @@
 			//
 
 			renderer = new THREE.WebGLRenderer( { antialias: true } );
-			renderer.shadowMap.enabled = true;
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			renderer.setClearColor( 0x000000 );
 			renderer.setPixelRatio( window.devicePixelRatio );
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.shadowMap.enabled = true;
 			container.appendChild( renderer.domElement );
 
 			//

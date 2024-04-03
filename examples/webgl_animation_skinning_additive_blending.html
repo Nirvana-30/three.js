@@ -21,14 +21,23 @@
 			(model from <a href="https://www.mixamo.com/" target="_blank" rel="noopener">mixamo.com</a>)<br/>
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import Stats from './jsm/libs/stats.module.js';
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
-			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
+			import Stats from 'three/addons/libs/stats.module.js';
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+			import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 			let scene, renderer, camera, stats;
 			let model, skeleton, mixer, clock;
@@ -61,11 +70,11 @@
 				scene.background = new THREE.Color( 0xa0a0a0 );
 				scene.fog = new THREE.Fog( 0xa0a0a0, 10, 50 );
 
-				const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
+				const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x8d8d8d, 3 );
 				hemiLight.position.set( 0, 20, 0 );
 				scene.add( hemiLight );
 
-				const dirLight = new THREE.DirectionalLight( 0xffffff );
+				const dirLight = new THREE.DirectionalLight( 0xffffff, 3 );
 				dirLight.position.set( 3, 10, 10 );
 				dirLight.castShadow = true;
 				dirLight.shadow.camera.top = 2;
@@ -78,7 +87,7 @@
 
 				// ground
 
-				const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
+				const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ), new THREE.MeshPhongMaterial( { color: 0xcbcbcb, depthWrite: false } ) );
 				mesh.rotation.x = - Math.PI / 2;
 				mesh.receiveShadow = true;
 				scene.add( mesh );
@@ -146,7 +155,6 @@
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
-				renderer.outputEncoding = THREE.sRGBEncoding;
 				renderer.shadowMap.enabled = true;
 				container.appendChild( renderer.domElement );
 
@@ -191,7 +199,11 @@
 						const currentAction = currentSettings ? currentSettings.action : null;
 						const action = settings ? settings.action : null;
 
-						prepareCrossFade( currentAction, action, 0.35 );
+						if ( currentAction !== action ) {
+
+							prepareCrossFade( currentAction, action, 0.35 );
+
+						}
 
 					};
 

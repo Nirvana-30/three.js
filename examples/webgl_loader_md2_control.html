@@ -22,15 +22,24 @@
 			use arrows to control characters, mouse for camera
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import Stats from './jsm/libs/stats.module.js';
+			import Stats from 'three/addons/libs/stats.module.js';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
-			import { MD2CharacterComplex } from './jsm/misc/MD2CharacterComplex.js';
-			import { Gyroscope } from './jsm/misc/Gyroscope.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+			import { MD2CharacterComplex } from 'three/addons/misc/MD2CharacterComplex.js';
+			import { Gyroscope } from 'three/addons/misc/Gyroscope.js';
 
 			let SCREEN_WIDTH = window.innerWidth;
 			let SCREEN_HEIGHT = window.innerHeight;
@@ -77,9 +86,9 @@
 
 				// LIGHTS
 
-				scene.add( new THREE.AmbientLight( 0x222222 ) );
+				scene.add( new THREE.AmbientLight( 0x666666, 3 ) );
 
-				const light = new THREE.DirectionalLight( 0xffffff, 2.25 );
+				const light = new THREE.DirectionalLight( 0xffffff, 7 );
 				light.position.set( 200, 450, 500 );
 
 				light.castShadow = true;
@@ -101,7 +110,7 @@
 
 				//  GROUND
 
-				const gt = new THREE.TextureLoader().load( "textures/terrain/grasslight-big.jpg" );
+				const gt = new THREE.TextureLoader().load( 'textures/terrain/grasslight-big.jpg' );
 				const gg = new THREE.PlaneGeometry( 16000, 16000 );
 				const gm = new THREE.MeshPhongMaterial( { color: 0xffffff, map: gt } );
 
@@ -110,7 +119,7 @@
 				ground.material.map.repeat.set( 64, 64 );
 				ground.material.map.wrapS = THREE.RepeatWrapping;
 				ground.material.map.wrapT = THREE.RepeatWrapping;
-				ground.material.map.encoding = THREE.sRGBEncoding;
+				ground.material.map.colorSpace = THREE.SRGBColorSpace;
 				// note that because the ground does not cast a shadow, .castShadow is left false
 				ground.receiveShadow = true;
 
@@ -125,7 +134,6 @@
 
 				//
 
-				renderer.outputEncoding = THREE.sRGBEncoding;
 				renderer.shadowMap.enabled = true;
 				renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -150,21 +158,21 @@
 
 				const configOgro = {
 
-					baseUrl: "models/md2/ogro/",
+					baseUrl: 'models/md2/ogro/',
 
-					body: "ogro.md2",
-					skins: [ "grok.jpg", "ogrobase.png", "arboshak.png", "ctf_r.png", "ctf_b.png", "darkam.png", "freedom.png",
-							 "gib.png", "gordogh.png", "igdosh.png", "khorne.png", "nabogro.png",
-							 "sharokh.png" ],
-					weapons: [[ "weapon.md2", "weapon.jpg" ]],
+					body: 'ogro.md2',
+					skins: [ 'grok.jpg', 'ogrobase.png', 'arboshak.png', 'ctf_r.png', 'ctf_b.png', 'darkam.png', 'freedom.png',
+							 'gib.png', 'gordogh.png', 'igdosh.png', 'khorne.png', 'nabogro.png',
+							 'sharokh.png' ],
+					weapons: [[ 'weapon.md2', 'weapon.jpg' ]],
 					animations: {
-						move: "run",
-						idle: "stand",
-						jump: "jump",
-						attack: "attack",
-						crouchMove: "cwalk",
-						crouchIdle: "cstand",
-						crouchAttach: "crattack"
+						move: 'run',
+						idle: 'stand',
+						jump: 'jump',
+						attack: 'attack',
+						crouchMove: 'cwalk',
+						crouchIdle: 'cstand',
+						crouchAttach: 'crattack'
 					},
 
 					walkSpeed: 350,

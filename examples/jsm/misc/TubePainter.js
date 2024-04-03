@@ -7,7 +7,7 @@ import {
 	Mesh,
 	MeshStandardMaterial,
 	Vector3
-} from '../../../build/three.module.js';
+} from 'three';
 
 function TubePainter() {
 
@@ -176,16 +176,13 @@ function TubePainter() {
 
 		if ( start === end ) return;
 
-		positions.updateRange.offset = start * 3;
-		positions.updateRange.count = ( end - start ) * 3;
+		positions.addUpdateRange( start * 3, ( end - start ) * 3 );
 		positions.needsUpdate = true;
 
-		normals.updateRange.offset = start * 3;
-		normals.updateRange.count = ( end - start ) * 3;
+		normals.addUpdateRange( start * 3, ( end - start ) * 3 );
 		normals.needsUpdate = true;
 
-		colors.updateRange.offset = start * 3;
-		colors.updateRange.count = ( end - start ) * 3;
+		colors.addUpdateRange( start * 3, ( end - start ) * 3 );
 		colors.needsUpdate = true;
 
 		count = geometry.drawRange.count;

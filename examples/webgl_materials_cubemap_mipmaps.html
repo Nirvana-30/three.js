@@ -15,11 +15,20 @@
 			Right: manual mipmaps<br/>
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 			let container;
 
@@ -78,6 +87,7 @@
 
 				const customizedCubeTexture = mipmaps.shift();
 				customizedCubeTexture.mipmaps = mipmaps;
+				customizedCubeTexture.colorSpace = THREE.SRGBColorSpace;
 				customizedCubeTexture.minFilter = THREE.LinearMipMapLinearFilter;
 				customizedCubeTexture.magFilter = THREE.LinearFilter;
 				customizedCubeTexture.generateMipmaps = false;

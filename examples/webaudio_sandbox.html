@@ -30,13 +30,22 @@
 			navigate with WASD / arrows / mouse
 		</div>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
-			import { FirstPersonControls } from './jsm/controls/FirstPersonControls.js';
+			import { FirstPersonControls } from 'three/addons/controls/FirstPersonControls.js';
 
 			let camera, controls, scene, renderer, light;
 
@@ -63,7 +72,7 @@
 				scene = new THREE.Scene();
 				scene.fog = new THREE.FogExp2( 0x000000, 0.0025 );
 
-				light = new THREE.DirectionalLight( 0xffffff );
+				light = new THREE.DirectionalLight( 0xffffff, 3 );
 				light.position.set( 0, 0.5, 1 ).normalize();
 				scene.add( light );
 
@@ -213,7 +222,6 @@
 
 				controls.movementSpeed = 70;
 				controls.lookSpeed = 0.05;
-				controls.noFly = true;
 				controls.lookVertical = false;
 
 				//

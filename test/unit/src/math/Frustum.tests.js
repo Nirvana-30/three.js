@@ -1,28 +1,18 @@
 /* global QUnit */
 
-import { Frustum } from '../../../../src/math/Frustum';
-import { Sphere } from '../../../../src/math/Sphere';
-import { Plane } from '../../../../src/math/Plane';
-import { Sprite } from '../../../../src/objects/Sprite';
-import { Vector3 } from '../../../../src/math/Vector3';
-import { Matrix4 } from '../../../../src/math/Matrix4';
-import { Box3 } from '../../../../src/math/Box3';
-import { Mesh } from '../../../../src/objects/Mesh';
-import { BoxGeometry } from '../../../../src/geometries/BoxGeometry';
-import { zero3, one3, eps } from './Constants.tests';
+import { Frustum } from '../../../../src/math/Frustum.js';
+
+import { Sphere } from '../../../../src/math/Sphere.js';
+import { Plane } from '../../../../src/math/Plane.js';
+import { Sprite } from '../../../../src/objects/Sprite.js';
+import { Vector3 } from '../../../../src/math/Vector3.js';
+import { Matrix4 } from '../../../../src/math/Matrix4.js';
+import { Box3 } from '../../../../src/math/Box3.js';
+import { Mesh } from '../../../../src/objects/Mesh.js';
+import { BoxGeometry } from '../../../../src/geometries/BoxGeometry.js';
+import { zero3, one3, eps } from '../../utils/math-constants.js';
 
 const unit3 = new Vector3( 1, 0, 0 );
-
-function planeEquals( a, b, tolerance ) {
-
-	tolerance = tolerance || 0.0001;
-
-	if ( a.normal.distanceTo( b.normal ) > tolerance ) return false;
-	if ( Math.abs( a.constant - b.constant ) > tolerance ) return false;
-
-	return true;
-
-}
 
 export default QUnit.module( 'Maths', () => {
 
@@ -31,26 +21,26 @@ export default QUnit.module( 'Maths', () => {
 		// INSTANCING
 		QUnit.test( 'Instancing', ( assert ) => {
 
-			var a = new Frustum();
+			let a = new Frustum();
 
 			assert.ok( a.planes !== undefined, 'Passed!' );
 			assert.ok( a.planes.length === 6, 'Passed!' );
 
-			var pDefault = new Plane();
-			for ( var i = 0; i < 6; i ++ ) {
+			const pDefault = new Plane();
+			for ( let i = 0; i < 6; i ++ ) {
 
 				assert.ok( a.planes[ i ].equals( pDefault ), 'Passed!' );
 
 			}
 
-			var p0 = new Plane( unit3, - 1 );
-			var p1 = new Plane( unit3, 1 );
-			var p2 = new Plane( unit3, 2 );
-			var p3 = new Plane( unit3, 3 );
-			var p4 = new Plane( unit3, 4 );
-			var p5 = new Plane( unit3, 5 );
+			const p0 = new Plane( unit3, - 1 );
+			const p1 = new Plane( unit3, 1 );
+			const p2 = new Plane( unit3, 2 );
+			const p3 = new Plane( unit3, 3 );
+			const p4 = new Plane( unit3, 4 );
+			const p5 = new Plane( unit3, 5 );
 
-			var a = new Frustum( p0, p1, p2, p3, p4, p5 );
+			a = new Frustum( p0, p1, p2, p3, p4, p5 );
 			assert.ok( a.planes[ 0 ].equals( p0 ), 'Passed!' );
 			assert.ok( a.planes[ 1 ].equals( p1 ), 'Passed!' );
 			assert.ok( a.planes[ 2 ].equals( p2 ), 'Passed!' );
@@ -60,16 +50,16 @@ export default QUnit.module( 'Maths', () => {
 
 		} );
 
-		// PUBLIC STUFF
+		// PUBLIC
 		QUnit.test( 'set', ( assert ) => {
 
-			var a = new Frustum();
-			var p0 = new Plane( unit3, - 1 );
-			var p1 = new Plane( unit3, 1 );
-			var p2 = new Plane( unit3, 2 );
-			var p3 = new Plane( unit3, 3 );
-			var p4 = new Plane( unit3, 4 );
-			var p5 = new Plane( unit3, 5 );
+			const a = new Frustum();
+			const p0 = new Plane( unit3, - 1 );
+			const p1 = new Plane( unit3, 1 );
+			const p2 = new Plane( unit3, 2 );
+			const p3 = new Plane( unit3, 3 );
+			const p4 = new Plane( unit3, 4 );
+			const p5 = new Plane( unit3, 5 );
 
 			a.set( p0, p1, p2, p3, p4, p5 );
 
@@ -84,15 +74,15 @@ export default QUnit.module( 'Maths', () => {
 
 		QUnit.test( 'clone', ( assert ) => {
 
-			var p0 = new Plane( unit3, - 1 );
-			var p1 = new Plane( unit3, 1 );
-			var p2 = new Plane( unit3, 2 );
-			var p3 = new Plane( unit3, 3 );
-			var p4 = new Plane( unit3, 4 );
-			var p5 = new Plane( unit3, 5 );
+			const p0 = new Plane( unit3, - 1 );
+			const p1 = new Plane( unit3, 1 );
+			const p2 = new Plane( unit3, 2 );
+			const p3 = new Plane( unit3, 3 );
+			const p4 = new Plane( unit3, 4 );
+			const p5 = new Plane( unit3, 5 );
 
-			var b = new Frustum( p0, p1, p2, p3, p4, p5 );
-			var a = b.clone();
+			const b = new Frustum( p0, p1, p2, p3, p4, p5 );
+			const a = b.clone();
 			assert.ok( a.planes[ 0 ].equals( p0 ), 'Passed!' );
 			assert.ok( a.planes[ 1 ].equals( p1 ), 'Passed!' );
 			assert.ok( a.planes[ 2 ].equals( p2 ), 'Passed!' );
@@ -108,15 +98,15 @@ export default QUnit.module( 'Maths', () => {
 
 		QUnit.test( 'copy', ( assert ) => {
 
-			var p0 = new Plane( unit3, - 1 );
-			var p1 = new Plane( unit3, 1 );
-			var p2 = new Plane( unit3, 2 );
-			var p3 = new Plane( unit3, 3 );
-			var p4 = new Plane( unit3, 4 );
-			var p5 = new Plane( unit3, 5 );
+			const p0 = new Plane( unit3, - 1 );
+			const p1 = new Plane( unit3, 1 );
+			const p2 = new Plane( unit3, 2 );
+			const p3 = new Plane( unit3, 3 );
+			const p4 = new Plane( unit3, 4 );
+			const p5 = new Plane( unit3, 5 );
 
-			var b = new Frustum( p0, p1, p2, p3, p4, p5 );
-			var a = new Frustum().copy( b );
+			const b = new Frustum( p0, p1, p2, p3, p4, p5 );
+			const a = new Frustum().copy( b );
 			assert.ok( a.planes[ 0 ].equals( p0 ), 'Passed!' );
 			assert.ok( a.planes[ 1 ].equals( p1 ), 'Passed!' );
 			assert.ok( a.planes[ 2 ].equals( p2 ), 'Passed!' );
@@ -132,8 +122,8 @@ export default QUnit.module( 'Maths', () => {
 
 		QUnit.test( 'setFromProjectionMatrix/makeOrthographic/containsPoint', ( assert ) => {
 
-			var m = new Matrix4().makeOrthographic( - 1, 1, - 1, 1, 1, 100 );
-			var a = new Frustum().setFromProjectionMatrix( m );
+			const m = new Matrix4().makeOrthographic( - 1, 1, - 1, 1, 1, 100 );
+			const a = new Frustum().setFromProjectionMatrix( m );
 
 			assert.ok( ! a.containsPoint( new Vector3( 0, 0, 0 ) ), 'Passed!' );
 			assert.ok( a.containsPoint( new Vector3( 0, 0, - 50 ) ), 'Passed!' );
@@ -153,8 +143,8 @@ export default QUnit.module( 'Maths', () => {
 
 		QUnit.test( 'setFromProjectionMatrix/makePerspective/containsPoint', ( assert ) => {
 
-			var m = new Matrix4().makePerspective( - 1, 1, 1, - 1, 1, 100 );
-			var a = new Frustum().setFromProjectionMatrix( m );
+			const m = new Matrix4().makePerspective( - 1, 1, 1, - 1, 1, 100 );
+			const a = new Frustum().setFromProjectionMatrix( m );
 
 			assert.ok( ! a.containsPoint( new Vector3( 0, 0, 0 ) ), 'Passed!' );
 			assert.ok( a.containsPoint( new Vector3( 0, 0, - 50 ) ), 'Passed!' );
@@ -174,8 +164,8 @@ export default QUnit.module( 'Maths', () => {
 
 		QUnit.test( 'setFromProjectionMatrix/makePerspective/intersectsSphere', ( assert ) => {
 
-			var m = new Matrix4().makePerspective( - 1, 1, 1, - 1, 1, 100 );
-			var a = new Frustum().setFromProjectionMatrix( m );
+			const m = new Matrix4().makePerspective( - 1, 1, 1, - 1, 1, 100 );
+			const a = new Frustum().setFromProjectionMatrix( m );
 
 			assert.ok( ! a.intersectsSphere( new Sphere( new Vector3( 0, 0, 0 ), 0 ) ), 'Passed!' );
 			assert.ok( ! a.intersectsSphere( new Sphere( new Vector3( 0, 0, 0 ), 0.9 ) ), 'Passed!' );
@@ -202,10 +192,10 @@ export default QUnit.module( 'Maths', () => {
 
 		QUnit.test( 'intersectsObject', ( assert ) => {
 
-			var m = new Matrix4().makePerspective( - 1, 1, 1, - 1, 1, 100 );
-			var a = new Frustum().setFromProjectionMatrix( m );
-			var object = new Mesh( new BoxGeometry( 1, 1, 1 ) );
-			var intersects;
+			const m = new Matrix4().makePerspective( - 1, 1, 1, - 1, 1, 100 );
+			const a = new Frustum().setFromProjectionMatrix( m );
+			const object = new Mesh( new BoxGeometry( 1, 1, 1 ) );
+			let intersects;
 
 			intersects = a.intersectsObject( object );
 			assert.notOk( intersects, 'No intersection' );
@@ -226,10 +216,10 @@ export default QUnit.module( 'Maths', () => {
 
 		QUnit.test( 'intersectsSprite', ( assert ) => {
 
-			var m = new Matrix4().makePerspective( - 1, 1, 1, - 1, 1, 100 );
-			var a = new Frustum().setFromProjectionMatrix( m );
-			var sprite = new Sprite();
-			var intersects;
+			const m = new Matrix4().makePerspective( - 1, 1, 1, - 1, 1, 100 );
+			const a = new Frustum().setFromProjectionMatrix( m );
+			const sprite = new Sprite();
+			let intersects;
 
 			intersects = a.intersectsSprite( sprite );
 			assert.notOk( intersects, 'No intersection' );
@@ -250,15 +240,16 @@ export default QUnit.module( 'Maths', () => {
 
 		QUnit.test( 'intersectsBox', ( assert ) => {
 
-			var m = new Matrix4().makePerspective( - 1, 1, 1, - 1, 1, 100 );
-			var a = new Frustum().setFromProjectionMatrix( m );
-			var box = new Box3( zero3.clone(), one3.clone() );
-			var intersects;
+			const m = new Matrix4().makePerspective( - 1, 1, 1, - 1, 1, 100 );
+			const a = new Frustum().setFromProjectionMatrix( m );
+			const box = new Box3( zero3.clone(), one3.clone() );
+			let intersects;
 
 			intersects = a.intersectsBox( box );
 			assert.notOk( intersects, 'No intersection' );
 
-			// add eps so that we prevent box touching the frustum, which might intersect depending on floating point numerics
+			// add eps so that we prevent box touching the frustum,
+			// which might intersect depending on floating point numerics
 			box.translate( new Vector3( - 1 - eps, - 1 - eps, - 1 - eps ) );
 
 			intersects = a.intersectsBox( box );

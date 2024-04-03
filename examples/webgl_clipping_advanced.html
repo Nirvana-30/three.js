@@ -7,15 +7,23 @@
 		<link type="text/css" rel="stylesheet" href="main.css">
 	</head>
 	<body>
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
 
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import Stats from './jsm/libs/stats.module.js';
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
+			import Stats from 'three/addons/libs/stats.module.js';
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 			function planesFromMesh( vertices, indices ) {
 
@@ -161,9 +169,9 @@
 
 				// Lights
 
-				scene.add( new THREE.AmbientLight( 0xffffff, 0.3 ) );
+				scene.add( new THREE.AmbientLight( 0xffffff ) );
 
-				const spotLight = new THREE.SpotLight( 0xffffff, 0.5 );
+				const spotLight = new THREE.SpotLight( 0xffffff, 60 );
 				spotLight.angle = Math.PI / 5;
 				spotLight.penumbra = 0.2;
 				spotLight.position.set( 2, 3, 3 );
@@ -174,7 +182,7 @@
 				spotLight.shadow.mapSize.height = 1024;
 				scene.add( spotLight );
 
-				const dirLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+				const dirLight = new THREE.DirectionalLight( 0xffffff, 1.5 );
 				dirLight.position.set( 0, 2, 0 );
 				dirLight.castShadow = true;
 				dirLight.shadow.camera.near = 1;
@@ -297,7 +305,7 @@
 				// GUI
 
 				const gui = new GUI(),
-					folder = gui.addFolder( "Local Clipping" ),
+					folder = gui.addFolder( 'Local Clipping' ),
 					props = {
 						get 'Enabled'() {
 
@@ -339,7 +347,7 @@
 				folder.add( props, 'Shadows' );
 				folder.add( props, 'Visualize' ).listen();
 
-				gui.addFolder( "Global Clipping" ).
+				gui.addFolder( 'Global Clipping' ).
 					add( {
 						get 'Enabled'() {
 
@@ -352,7 +360,7 @@
 								globalClippingPlanes : Empty;
 
 						}
-					}, "Enabled" );
+					}, 'Enabled' );
 
 
 				// Start

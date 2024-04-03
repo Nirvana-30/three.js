@@ -1,22 +1,36 @@
 /* global QUnit */
 
-import { BufferAttribute } from '../../../../src/core/BufferAttribute';
-import { BufferGeometry } from '../../../../src/core/BufferGeometry';
-import { BufferGeometryLoader } from '../../../../src/loaders/BufferGeometryLoader';
-import { DynamicDrawUsage } from '../../../../src/constants';
+import { BufferGeometryLoader } from '../../../../src/loaders/BufferGeometryLoader.js';
+
+import { BufferAttribute } from '../../../../src/core/BufferAttribute.js';
+import { BufferGeometry } from '../../../../src/core/BufferGeometry.js';
+import { DynamicDrawUsage } from '../../../../src/constants.js';
+import { Loader } from '../../../../src/loaders/Loader.js';
 
 export default QUnit.module( 'Loaders', () => {
 
 	QUnit.module( 'BufferGeometryLoader', () => {
 
-		// INSTANCING
-		QUnit.todo( 'Instancing', ( assert ) => {
+		// INHERITANCE
+		QUnit.test( 'Extending', ( assert ) => {
 
-			assert.ok( false, 'everything\'s gonna be alright' );
+			const object = new BufferGeometryLoader();
+			assert.strictEqual(
+				object instanceof Loader, true,
+				'BufferGeometryLoader extends from Loader'
+			);
 
 		} );
 
-		// PUBLIC STUFF
+		// INSTANCING
+		QUnit.test( 'Instancing', ( assert ) => {
+
+			const object = new BufferGeometryLoader();
+			assert.ok( object, 'Can instantiate a BufferGeometryLoader.' );
+
+		} );
+
+		// PUBLIC
 		QUnit.todo( 'load', ( assert ) => {
 
 			assert.ok( false, 'everything\'s gonna be alright' );
@@ -29,6 +43,7 @@ export default QUnit.module( 'Loaders', () => {
 
 		} );
 
+		// OTHERS
 		QUnit.test( 'parser - attributes - circlable', ( assert ) => {
 
 			const loader = new BufferGeometryLoader();
@@ -36,8 +51,6 @@ export default QUnit.module( 'Loaders', () => {
 			const attr = new BufferAttribute( new Float32Array( [ 7, 8, 9, 10, 11, 12 ] ), 2, true );
 			attr.name = 'attribute';
 			attr.setUsage( DynamicDrawUsage );
-			attr.updateRange.offset = 1;
-			attr.updateRange.count = 2;
 
 			geometry.setAttribute( 'attr', attr );
 

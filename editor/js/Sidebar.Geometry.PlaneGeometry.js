@@ -1,54 +1,54 @@
-import * as THREE from '../../build/three.module.js';
+import * as THREE from 'three';
 
-import { UIRow, UIText, UIInteger, UINumber } from './libs/ui.js';
+import { UIDiv, UIRow, UIText, UIInteger, UINumber } from './libs/ui.js';
 
 import { SetGeometryCommand } from './commands/SetGeometryCommand.js';
 
 function GeometryParametersPanel( editor, object ) {
 
-	var strings = editor.strings;
+	const strings = editor.strings;
 
-	var container = new UIRow();
+	const container = new UIDiv();
 
-	var geometry = object.geometry;
-	var parameters = geometry.parameters;
+	const geometry = object.geometry;
+	const parameters = geometry.parameters;
 
 	// width
 
-	var widthRow = new UIRow();
-	var width = new UINumber( parameters.width ).onChange( update );
+	const widthRow = new UIRow();
+	const width = new UINumber( parameters.width ).onChange( update );
 
-	widthRow.add( new UIText( strings.getKey( 'sidebar/geometry/plane_geometry/width' ) ).setWidth( '90px' ) );
+	widthRow.add( new UIText( strings.getKey( 'sidebar/geometry/plane_geometry/width' ) ).setClass( 'Label' ) );
 	widthRow.add( width );
 
 	container.add( widthRow );
 
 	// height
 
-	var heightRow = new UIRow();
-	var height = new UINumber( parameters.height ).onChange( update );
+	const heightRow = new UIRow();
+	const height = new UINumber( parameters.height ).onChange( update );
 
-	heightRow.add( new UIText( strings.getKey( 'sidebar/geometry/plane_geometry/height' ) ).setWidth( '90px' ) );
+	heightRow.add( new UIText( strings.getKey( 'sidebar/geometry/plane_geometry/height' ) ).setClass( 'Label' ) );
 	heightRow.add( height );
 
 	container.add( heightRow );
 
 	// widthSegments
 
-	var widthSegmentsRow = new UIRow();
-	var widthSegments = new UIInteger( parameters.widthSegments ).setRange( 1, Infinity ).onChange( update );
+	const widthSegmentsRow = new UIRow();
+	const widthSegments = new UIInteger( parameters.widthSegments ).setRange( 1, Infinity ).onChange( update );
 
-	widthSegmentsRow.add( new UIText( strings.getKey( 'sidebar/geometry/plane_geometry/widthsegments' ) ).setWidth( '90px' ) );
+	widthSegmentsRow.add( new UIText( strings.getKey( 'sidebar/geometry/plane_geometry/widthsegments' ) ).setClass( 'Label' ) );
 	widthSegmentsRow.add( widthSegments );
 
 	container.add( widthSegmentsRow );
 
 	// heightSegments
 
-	var heightSegmentsRow = new UIRow();
-	var heightSegments = new UIInteger( parameters.heightSegments ).setRange( 1, Infinity ).onChange( update );
+	const heightSegmentsRow = new UIRow();
+	const heightSegments = new UIInteger( parameters.heightSegments ).setRange( 1, Infinity ).onChange( update );
 
-	heightSegmentsRow.add( new UIText( strings.getKey( 'sidebar/geometry/plane_geometry/heightsegments' ) ).setWidth( '90px' ) );
+	heightSegmentsRow.add( new UIText( strings.getKey( 'sidebar/geometry/plane_geometry/heightsegments' ) ).setClass( 'Label' ) );
 	heightSegmentsRow.add( heightSegments );
 
 	container.add( heightSegmentsRow );

@@ -1,22 +1,29 @@
 <!DOCTYPE html><html lang="ko"><head>
     <meta charset="utf-8">
-    <title>의 텍스처(Textures)</title>
+    <title>텍스처(Textures)</title>
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@threejs">
-    <meta name="twitter:title" content="Three.js – 의 텍스처(Textures)">
+    <meta name="twitter:title" content="Three.js – 텍스처(Textures)">
     <meta property="og:image" content="https://threejs.org/files/share.png">
-    <link rel="shortcut icon" href="/files/favicon_white.ico" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="/files/favicon.ico" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
 
-    <link rel="stylesheet" href="/manual/resources/lesson.css">
-    <link rel="stylesheet" href="/manual/resources/lang.css">
+    <link rel="stylesheet" href="../resources/lesson.css">
+    <link rel="stylesheet" href="../resources/lang.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "../../build/three.module.js"
+  }
+}
+</script>
     <link rel="stylesheet" href="/manual/ko/lang.css">
   </head>
   <body>
     <div class="container">
       <div class="lesson-title">
-        <h1>의 텍스처(Textures)</h1>
+        <h1>텍스처(Textures)</h1>
       </div>
       <div class="lesson">
         <div class="lesson-main">
@@ -57,10 +64,12 @@
 반환 받은 값을 재질(material)의 <code class="notranslate" translate="no">map</code> 속성에 지정합니다(<code class="notranslate" translate="no">color</code> 속성은 지정하지
 않습니다).</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loader = new THREE.TextureLoader();
++const texture = loader.load( 'resources/images/wall.jpg' );
++texture.colorSpace = THREE.SRGBColorSpace;
 
 const material = new THREE.MeshBasicMaterial({
 -  color: 0xFF8844,
-+  map: loader.load('resources/images/wall.jpg'),
++  map: texture,
 });
 </pre>
 <p>※ <a href="/docs/#api/ko/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a>을 사용했으므로 광원을 사용할 필요가 없습니다.</p>
@@ -87,20 +96,28 @@ const material = new THREE.MeshBasicMaterial({
 
 <p>단순히 재질을 6개 만들어 <a href="/docs/#api/ko/objects/Mesh"><code class="notranslate" translate="no">Mesh</code></a>를 생성할 때 배열로 넘겨주기만 하면 됩니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const loader = new THREE.TextureLoader();
+-const texture = loader.load( 'resources/images/wall.jpg' );
+-texture.colorSpace = THREE.SRGBColorSpace;
 
 -const material = new THREE.MeshBasicMaterial({
--  map: loader.load('resources/images/wall.jpg'),
+-  map: texture,
 -});
 +const materials = [
-+  new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-1.jpg')}),
-+  new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-2.jpg')}),
-+  new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-3.jpg')}),
-+  new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-4.jpg')}),
-+  new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-5.jpg')}),
-+  new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-6.jpg')}),
++  new THREE.MeshBasicMaterial({map: loadColorTexture('resources/images/flower-1.jpg')}),
++  new THREE.MeshBasicMaterial({map: loadColorTexture('resources/images/flower-2.jpg')}),
++  new THREE.MeshBasicMaterial({map: loadColorTexture('resources/images/flower-3.jpg')}),
++  new THREE.MeshBasicMaterial({map: loadColorTexture('resources/images/flower-4.jpg')}),
++  new THREE.MeshBasicMaterial({map: loadColorTexture('resources/images/flower-5.jpg')}),
++  new THREE.MeshBasicMaterial({map: loadColorTexture('resources/images/flower-6.jpg')}),
 +];
 -const cube = new THREE.Mesh(geometry, material);
 +const cube = new THREE.Mesh(geometry, materials);
+
++function loadColorTexture( path ) {
++  const texture = loader.load( path );
++  texture.colorSpace = THREE.SRGBColorSpace;
++  return texture;
++}
 </pre>
 <p>껌이네요.</p>
 <p></p><div translate="no" class="threejs_example_container notranslate">
@@ -272,7 +289,7 @@ loadManager.onLoad = () =&gt; {
 사용하는 대신 보통 PNG가 더 용량이 크죠. 하지만 PNG는 투명도를 지원합니다.
 PNG는 비-이미지 데이터인 법선 맵(normal maps), 그리고 나중에 살펴볼 다른
 비-이미지 데이터를 사용하기에 현재로써는 가장 적당한 파일 형식입니다.</p>
-<p>위에서 말했듯, WebGL에서는 JPG가 용량이 더 작긴 해도 
+<p>위에서 말했듯, WebGL에서는 JPG가 용량이 더 작긴 해도
 PNG 형식보다 메모리 점유율이 낮진 않습니다.</p>
 <h2 id="-a-name-filtering-and-mips-a-mips"><a name="filtering-and-mips"></a> 필터링과 Mips</h2>
 <p>이 16x16 텍스처를</p>
@@ -446,7 +463,7 @@ const material = new THREE.MeshBasicMaterial({
 </pre>
 <p>간단한 인터페이스를 만들어보죠.
 다시 한 번 <a href="https://github.com/georgealways/lil-gui">lil-gui</a>가 등장할 때입니다.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import { GUI } from '/examples/jsm/libs/lil-gui.module.min.js';
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 </pre>
 <p>이전 예제처럼 간단한 헬퍼 클래스를 만들어 각도(degrees)로 값을 조절하면
 알아서 호도(radians)로 변환해 지정하게끔 해줍니다.</p>
@@ -534,9 +551,9 @@ roughness
         </div>
       </div>
     </div>
-  
-  <script src="/manual/resources/prettify.js"></script>
-  <script src="/manual/resources/lesson.js"></script>
+
+  <script src="../resources/prettify.js"></script>
+  <script src="../resources/lesson.js"></script>
 
 
 

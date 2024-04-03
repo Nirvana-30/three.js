@@ -236,14 +236,23 @@
 
 		</script>
 
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from 'three';
 
-			import Stats from './jsm/libs/stats.module.js';
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
+			import Stats from 'three/addons/libs/stats.module.js';
+			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
-			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 			let dolly, camera, scene, renderer;
 			let geometry, material, mesh;
@@ -268,7 +277,7 @@
 
 				renderer = new THREE.WebGLRenderer( { canvas: canvas } );
 				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( config.resolution, config.resolution );
+				renderer.setSize( parseInt( config.resolution ), parseInt( config.resolution ) );
 
 				window.addEventListener( 'resize', onWindowResize );
 
@@ -320,7 +329,7 @@
 
 				} else {
 
-					renderer.setSize( config.resolution, config.resolution );
+					renderer.setSize( parseInt( config.resolution ), parseInt( config.resolution ) );
 
 				}
 
